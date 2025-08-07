@@ -5,40 +5,230 @@
 <title>Angol Mini – Modul indító</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-body { font-family: sans-serif; background: #0f172a; color: white; margin: 0; padding: 20px; }
-h1 { color: #22c55e; }
-select, button { padding: 10px; margin-top: 10px; font-size: 16px; border-radius: 6px; border: none; }
-button { background: #22c55e; color: black; cursor: pointer; }
-button:hover { background: #16a34a; }
+:root{--bg:#0f172a;--card:#111827;--muted:#94a3b8;--text:#e5e7eb;--accent:#22c55e;--accent2:#60a5fa;--danger:#ef4444}
+*{box-sizing:border-box}html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+.container{max-width:900px;margin:24px auto;padding:0 16px}
+h1{margin:0 0 8px;color:var(--accent)}
+.muted{color:var(--muted)}
+select,input,button{font-size:16px;border-radius:10px;border:1px solid rgba(255,255,255,.15);padding:10px 12px;background:rgba(255,255,255,.04);color:var(--text)}
+button{cursor:pointer;border:none}
+.btn{padding:10px 14px;border-radius:10px;font-weight:700}
+.primary{background:var(--accent);color:#052e16;border:none}
+.secondary{background:var(--accent2);color:#0b1220;border:none}
+.ghost{background:transparent;border:1px solid rgba(255,255,255,.18)}
+.card{background:radial-gradient(1200px 600px at -20% -20%,rgba(255,255,255,.08),transparent 50%),var(--card);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:16px;margin-top:12px}
+.hidden{display:none}
+.tag{font-size:.75rem;padding:4px 8px;border:1px solid rgba(255,255,255,.12);border-radius:999px;color:var(--muted);margin-right:8px}
+.quiz-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:16px}
+.options{display:grid;gap:8px;margin-top:10px}
+.option{padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.04)}
+.option.correct{border-color:rgba(34,197,94,.8);outline:2px solid rgba(34,197,94,.3)}
+.option.wrong{border-color:rgba(239,68,68,.8);outline:2px solid rgba(239,68,68,.3)}
+.footer{border-top:1px solid rgba(255,255,255,.08);text-align:center;padding:16px;margin-top:24px;color:var(--muted)}
+.head{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
 </style>
 </head>
 <body>
-<h1>Modul indító</h1>
-<p>Válassz modult és indítsd el:</p>
+<div class="container">
+  <h1>Modul indító</h1>
+  <p class="muted">Válassz modult és indítsd el. Modulokat az <a href="admin.html" style="color:#60a5fa">admin oldalon</a> tölthetsz fel.</p>
 
-<select id="moduleSelect"></select>
-<br>
-<button onclick="startModule()">Indítás</button>
+  <!-- VÁLASZTÓ -->
+  <section id="chooser">
+    <div class="head">
+      <select id="moduleSelect"></select>
+      <button id="startBtn" class="btn primary">Indítás</button>
+    </div>
+    <div id="meta" class="card">
+      <div id="mTitle" style="font-weight:700"></div>
+      <div id="mDesc" class="muted" style="margin-top:6px"></div>
+      <div id="mTags" style="margin-top:8px"></div>
+    </div>
+  </section>
+
+  <!-- LECKE-FELÜLET -->
+  <section id="player" class="hidden">
+    <div class="head">
+      <button id="backBtn" class="btn ghost">&larr; Vissza</button>
+      <h2 id="lessonTitle" style="margin:0"></h2>
+    </div>
+    <div id="lessonContent" class="card" style="margin-top:12px"></div>
+    <div class="head" style="justify-content:space-between;margin-top:12px">
+      <button id="prevBtn" class="btn secondary" disabled>Előző</button>
+      <button id="nextBtn" class="btn primary">Tovább</button>
+    </div>
+  </section>
+
+  <div class="footer"><small>Statikus demó • Modulok a böngészőben (localStorage)</small></div>
+</div>
 
 <script>
-function loadModules() {
-    let modules = JSON.parse(localStorage.getItem("modules") || "[]");
-    let select = document.getElementById("moduleSelect");
-    select.innerHTML = "";
-    modules.forEach(m => {
-        let opt = document.createElement("option");
-        opt.value = m.id;
-        opt.textContent = m.title;
-        select.appendChild(opt);
-    });
+/* ====== STORAGE (admin.html-lel kompatibilis) ====== */
+function getAllModules(){ try{ return JSON.parse(localStorage.getItem('modules')||'[]'); }catch(e){ return []; } }
+function setAllModules(arr){ localStorage.setItem('modules', JSON.stringify(arr||[])); }
+
+/* ====== UI ====== */
+var selectEl = document.getElementById('moduleSelect');
+var startBtn = document.getElementById('startBtn');
+var chooser  = document.getElementById('chooser');
+var player   = document.getElementById('player');
+var mTitle   = document.getElementById('mTitle');
+var mDesc    = document.getElementById('mDesc');
+var mTags    = document.getElementById('mTags');
+
+var backBtn = document.getElementById('backBtn');
+var prevBtn = document.getElementById('prevBtn');
+var nextBtn = document.getElementById('nextBtn');
+var lessonTitle = document.getElementById('lessonTitle');
+var lessonContent = document.getElementById('lessonContent');
+
+var currentModule = null;
+var idx = 0;
+
+function populate(){
+  var mods = getAllModules();
+  selectEl.innerHTML = '';
+  if (!mods.length){
+    var o = document.createElement('option');
+    o.value = ''; o.text = 'Nincs modul – menj a Modulkezelőbe (admin.html)';
+    selectEl.appendChild(o);
+    updateMeta(null);
+    return;
+  }
+  for (var i=0;i<mods.length;i++){
+    var opt = document.createElement('option');
+    opt.value = mods[i].id; opt.text = mods[i].title || mods[i].id;
+    selectEl.appendChild(opt);
+  }
+  updateMeta(mods[0]);
 }
-function startModule() {
-    let select = document.getElementById("moduleSelect");
-    let moduleId = select.value;
-    if (!moduleId) return alert("Válassz modult!");
-    alert("A(z) " + moduleId + " modul elindult!");
+
+function updateMeta(mod){
+  if (!mod){ mTitle.textContent='–'; mDesc.textContent='Válassz a listából modult.'; mTags.innerHTML=''; return; }
+  mTitle.textContent = mod.title || mod.id;
+  mDesc.textContent = mod.description || '';
+  mTags.innerHTML = '';
+  var tags = mod.tags||[];
+  for (var i=0;i<tags.length;i++){
+    var s=document.createElement('span'); s.className='tag'; s.textContent=tags[i]; mTags.appendChild(s);
+  }
 }
-loadModules();
+selectEl.onchange = function(){
+  var m = find(selectEl.value); updateMeta(m);
+};
+
+function find(id){
+  var mods = getAllModules();
+  for (var i=0;i<mods.length;i++) if (mods[i].id===id) return mods[i];
+  return null;
+}
+
+startBtn.onclick = function(){
+  var id = selectEl.value;
+  var m = find(id);
+  if (!m) return alert('Válassz modult!');
+  start(m);
+};
+
+function start(mod){
+  currentModule = mod; idx = 0;
+  chooser.classList.add('hidden');
+  player.classList.remove('hidden');
+  renderStep();
+}
+
+function renderStep(){
+  var step = currentModule.lessons[idx];
+  lessonTitle.textContent = step.title || currentModule.title || '';
+  lessonContent.innerHTML = '';
+
+  if (step.type === 'read'){
+    var card = document.createElement('div');
+    card.className = 'quiz-card';
+    card.innerHTML = step.content || '';
+    lessonContent.appendChild(card);
+  }
+
+  if (step.type === 'mcq'){
+    var card2 = document.createElement('div');
+    card2.className = 'quiz-card';
+    var prompt = document.createElement('div');
+    prompt.textContent = step.prompt || '';
+    var opts = document.createElement('div');
+    opts.className = 'options';
+    for (var i=0;i<(step.options||[]).length;i++){
+      (function(o){
+        var b=document.createElement('button'); b.className='option'; b.textContent=o;
+        b.onclick=function(){
+          if (b.disabled) return;
+          var ok = (o===step.answer);
+          b.classList.add(ok?'correct':'wrong');
+          if (!ok){
+            var kids = opts.children;
+            for (var j=0;j<kids.length;j++){
+              if (kids[j].textContent===step.answer) kids[j].classList.add('correct');
+            }
+          }
+          var ex = document.createElement('div'); ex.className='muted'; ex.style.marginTop='10px';
+          ex.textContent = step.explain || '';
+          card2.appendChild(ex);
+          var k = opts.children; for (var t=0;t<k.length;t++) k[t].disabled = true;
+        };
+        opts.appendChild(b);
+      })(step.options[i]);
+    }
+    card2.appendChild(prompt); card2.appendChild(opts);
+    lessonContent.appendChild(card2);
+  }
+
+  if (step.type === 'fill'){
+    var card3 = document.createElement('div');
+    card3.className = 'quiz-card';
+    var p = document.createElement('div'); p.textContent = step.prompt || '';
+    var input = document.createElement('input'); input.className='input'; input.placeholder = step.placeholder||'';
+    var check = document.createElement('button'); check.className='btn primary'; check.textContent='Ellenőrzés'; check.style.marginTop='10px';
+    var fb = document.createElement('div'); fb.style.marginTop='10px'; fb.style.fontWeight='700';
+    check.onclick = function(){
+      var v=(input.value||'').trim().toLowerCase();
+      var a=String(step.answer||'').toLowerCase();
+      fb.textContent = (v===a) ? '✅ Helyes!' : ('❌ Nem ez. Helyes válasz: '+step.answer+(step.explain?('. '+step.explain):''));
+    };
+    card3.appendChild(p); card3.appendChild(input); card3.appendChild(check); card3.appendChild(fb);
+    lessonContent.appendChild(card3);
+  }
+
+  prevBtn.disabled = (idx===0);
+  nextBtn.textContent = (idx===currentModule.lessons.length-1) ? 'Befejezés' : 'Tovább';
+}
+
+backBtn.onclick = function(){
+  player.classList.add('hidden');
+  chooser.classList.remove('hidden');
+  populate();
+};
+prevBtn.onclick = function(){ if (idx>0){ idx--; renderStep(); } };
+nextBtn.onclick = function(){
+  if (!currentModule) return;
+  if (idx < currentModule.lessons.length-1){ idx++; renderStep(); }
+  else { alert('Szép munka! Modul befejezve.'); backBtn.click(); }
+};
+
+/* --- indulás --- */
+populate();
+
+/* --- opcionális: auto-start URL-ből ?mod=... --- */
+(function(){
+  var m = /[?&]mod=([^&]+)/.exec(location.search);
+  if (m){
+    var id = decodeURIComponent(m[1]);
+    // válassza ki a legördülőben
+    for (var i=0;i<selectEl.options.length;i++){
+      if (selectEl.options[i].value===id) { selectEl.selectedIndex=i; break; }
+    }
+    var mod = find(id);
+    if (mod) start(mod);
+  }
+})();
 </script>
 </body>
 </html>
