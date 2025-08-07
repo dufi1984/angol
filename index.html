@@ -9,11 +9,12 @@
 <body>
     <div class="container">
         <h1>Moduláris Angoltanító</h1>
-        <p>A modulokat a <code>/modules</code> mappából tölti be (<code>manifest.json</code> alapján).</p>
 
-        <label for="moduleSelect">Válassz modult:</label>
-        <select id="moduleSelect"></select>
-        <button id="startModuleBtn" class="start-btn">Indítás</button>
+        <div class="module-selector">
+            <label for="moduleSelect">Válassz modult:</label>
+            <select id="moduleSelect"></select>
+            <button id="startModuleBtn" class="start-btn">Indítás</button>
+        </div>
 
         <div id="moduleDescription" class="description"></div>
         <div id="quizContainer" class="quiz-container"></div>
@@ -26,7 +27,7 @@
                 const manifest = await res.json();
                 const select = document.getElementById('moduleSelect');
 
-                select.innerHTML = ''; // kiürítjük a listát
+                select.innerHTML = '';
 
                 manifest.forEach(module => {
                     const option = document.createElement('option');
@@ -36,7 +37,6 @@
                     select.appendChild(option);
                 });
 
-                // Első elem leírása megjelenjen
                 if (manifest.length > 0) {
                     document.getElementById('moduleDescription').textContent =
                         manifest[0].description || '';
@@ -64,9 +64,6 @@
                 const res = await fetch(`modules/${selectedFile}`);
                 const moduleData = await res.json();
 
-                alert(`A(z) ${selectedFile} modul elindult!`);
-                console.log("Betöltött modul adatok:", moduleData);
-
                 renderQuiz(moduleData);
             } catch (err) {
                 console.error("Hiba a modul betöltésekor:", err);
@@ -88,6 +85,7 @@
                 if (q.type === 'mcq' && q.options) {
                     q.options.forEach(opt => {
                         const btn = document.createElement('button');
+                        btn.classList.add('answer-btn');
                         btn.textContent = opt;
                         btn.addEventListener('click', () => {
                             if (opt === q.answer) {
@@ -103,6 +101,7 @@
                     input.placeholder = q.placeholder || 'Írd ide a választ';
                     const checkBtn = document.createElement('button');
                     checkBtn.textContent = "Ellenőrzés";
+                    checkBtn.classList.add('check-btn');
                     checkBtn.addEventListener('click', () => {
                         if (input.value.trim().toLowerCase() === q.answer.toLowerCase()) {
                             alert("Helyes!");
