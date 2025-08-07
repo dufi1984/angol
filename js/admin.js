@@ -10,7 +10,7 @@
     mods.forEach(m => {
       const row = document.createElement('div');
       row.className = 'card admin-item';
-      row.innerHTML = \`
+      row.innerHTML = \'
         <div>
           <div class="title">\${m.title}</div>
           <div class="desc">\${m.description || ''}</div>
