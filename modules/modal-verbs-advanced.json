@@ -3,52 +3,52 @@
   "title": "Modal Verbs – Haladó",
   "description": "Haladó szintű feladatok a módbeli segédigékről.",
   "tags": [],
-  "edu": "A módbeli segédigék (modal verbs) a főige előtt állnak, és a mondat jelentését módosítják. Fő funkcióik: képesség, valószínűség, kötelesség, tiltás, tanácsadás és udvariasság.\n\n**Nyelvtani alapok:**\n1. Nincs -s 3. személyben: *She can swim.*\n2. Utánuk az ige alapformája jön: *must go, should see*.\n3. Negatív forma: modal + not → *can’t, shouldn’t, mustn’t*.\n4. Múltbeli következtetés: modal + have + V3 → *might have lost, must have left*.\n\n**Jelentésbeli különbségek:**\n- **MUST** → erős bizonyosság vagy kötelezettség (*He must be at work. / You must wear a helmet.*)\n- **CAN’T** → erős tagadó következtetés (*He can’t be 50.*)\n- **SHOULD** → tanács (*You should rest.*)\n- **MIGHT / COULD / MAY** → lehetőség (*It might rain.*)\n- **COULD / WOULD** → udvarias kérés (*Could you help me?*)",
+  "edu": "A módbeli segédigék (modal verbs) a főige előtt állnak, és a mondat jelentését módosítják.\n\n**Fő funkciók:** képesség, valószínűség, kötelesség, tiltás, tanácsadás, udvariasság.\n\n**Nyelvtani alapok:**\n1. Nincs -s 3. személyben: *She can swim.*\n2. Utánuk az ige alapformája jön: *must go, should see*.\n3. Negatív forma: modal + not → *can’t, shouldn’t, mustn’t*.\n4. Múltbeli következtetés: modal + have + V3 → *might have lost, must have left*.\n\n**Jelentésbeli különbségek:**\n- **MUST** → erős bizonyosság vagy kötelezettség (*He must be at work. / You must wear a helmet.*)\n- **CAN’T** → erős tagadó következtetés (*He can’t be 50.*)\n- **SHOULD** → tanács (*You should rest.*)\n- **MIGHT / COULD / MAY** → lehetőség (*It might rain.*)\n- **COULD / WOULD** → udvarias kérés (*Could you help me?*)",
   "lessons": [
     {
-      "question": "Melyik mondat fejezi ki erős bizonyosságot?",
-      "options": [
-        "He must be tired after such a long day.",
-        "He might be tired after such a long day.",
-        "He could be tired after such a long day."
-      ],
-      "answer": 0
+      "id": "q1",
+      "type": "mcq",
+      "title": "Valószínű következtetés",
+      "prompt": "He _______ be at the meeting, I saw his car outside.",
+      "options": ["must", "might", "can't", "should"],
+      "answer": "must",
+      "explain": "Erős, pozitív következtetés → must."
     },
     {
-      "question": "Melyik modal verb fejezi ki a legnagyobb valószínűséget?",
-      "options": [
-        "might",
-        "must",
-        "could"
-      ],
-      "answer": 1
+      "id": "q2",
+      "type": "fill",
+      "title": "Udvarias tanács",
+      "prompt": "You _______ talk to your boss about this problem.",
+      "answer": "should",
+      "placeholder": "írj ide egy segédigét",
+      "explain": "Tanácsadás → should."
     },
     {
-      "question": "Hogyan fejeznéd ki, hogy valaki biztosan nem lehet 30 éves?",
-      "options": [
-        "He must be 30.",
-        "He can't be 30.",
-        "He shouldn't be 30."
-      ],
-      "answer": 1
+      "id": "q3",
+      "type": "mcq",
+      "title": "Lehetőség a múltban",
+      "prompt": "She _______ have taken the wrong train, that’s why she’s late.",
+      "options": ["must", "might", "could", "can't"],
+      "answer": "might",
+      "explain": "Múltbeli lehetőség → might have + V3."
     },
     {
-      "question": "Melyik mondat udvarias kérés?",
-      "options": [
-        "Could you pass the salt, please?",
-        "You must pass the salt.",
-        "You should pass the salt."
-      ],
-      "answer": 0
+      "id": "q4",
+      "type": "fill",
+      "title": "Erős kötelezettség",
+      "prompt": "All passengers _______ present their tickets upon boarding.",
+      "answer": "must",
+      "placeholder": "írj ide egy segédigét",
+      "explain": "Szabály/kötelezettség → must."
     },
     {
-      "question": "Melyik modal verb használatos tanácsadásra?",
-      "options": [
-        "must",
-        "should",
-        "can't"
-      ],
-      "answer": 1
+      "id": "q5",
+      "type": "mcq",
+      "title": "Tiltás",
+      "prompt": "You _______ park here, it’s a no-parking zone.",
+      "options": ["must", "can't", "shouldn't", "might not"],
+      "answer": "can't",
+      "explain": "Tiltás → can’t."
     }
   ]
 }
