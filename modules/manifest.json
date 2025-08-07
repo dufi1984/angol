@@ -1,6 +1,7 @@
 {
   "modules": [
     "modal-verbs-basic.json",
-    "test-module.json"
+    "test-module.json",
+    "daily-phrases.json"
   ]
 }
