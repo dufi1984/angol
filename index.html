@@ -3,51 +3,41 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Angol Mini – Modulok</title>
+  <title>Modulkezelő – Angol Mini</title>
   <link rel="stylesheet" href="css/style.css"/>
 </head>
 <body>
   <header class="topbar">
     <div class="brand">Angol Mini</div>
     <nav>
-      <a href="index.html" class="active">Tanulás</a>
-      <a href="admin.html">Modulkezelő</a>
+      <a href="index.html">Tanulás</a>
+      <a href="admin.html" class="active">Modulkezelő</a>
     </nav>
   </header>
 
   <main class="container">
-    <section id="chooser">
-      <h1>Válassz modult</h1>
-      <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
-        <select id="moduleSelect" class="input" style="min-width:280px;"></select>
-        <button id="startBtn" class="primary">Indítás</button>
-      </div>
-      <div id="moduleMeta" class="card" style="margin-top:12px;">
-        <div class="title" id="moduleTitle">–</div>
-        <div class="desc" id="moduleDesc">Válassz a listából egy modult.</div>
-        <div class="tags" id="moduleTags" style="margin-top:8px;"></div>
-      </div>
-    </section>
+    <section class="admin">
+      <h1>Modulkezelő</h1>
+      <p class="muted">Tölts fel JSON modulokat, engedélyezd/tiltsd, töröld vagy exportáld őket.</p>
 
-    <section id="lessonArea" class="lesson hidden">
-      <div class="lesson-head">
-        <button id="backBtn" class="ghost">&larr; Vissza</button>
-        <h2 id="lessonTitle"></h2>
+      <div class="card upload">
+        <label for="fileInput" class="btn primary">+ Modul feltöltése (.json)</label>
+        <input id="fileInput" type="file" accept="application/json" hidden />
+        <button id="exportBtn" class="btn secondary">Minden modul exportálása</button>
+        <button id="resetBtn" class="btn ghost">Alaphelyzet (seed újratöltése)</button>
       </div>
-      <div id="lessonContent" class="lesson-content"></div>
-      <div class="lesson-footer">
-        <button id="prevBtn" class="secondary" disabled>Előző</button>
-        <button id="nextBtn" class="primary">Tovább</button>
-      </div>
+
+      <div id="adminList" class="admin-list"></div>
     </section>
   </main>
 
   <footer class="footer">
-    <small>Statikus demó • Modulok a böngészőben tárolódnak</small>
+    <small>Statikus demó • Modulok a böngésző helyi tárában (localStorage)</small>
   </footer>
 
-  <script src="js/modules_seed.js"></script>
-  <script src="js/storage.js"></script>
-  <script src="js/app.js?v=2"></script>
+  <!-- Fontos a sorrend! -->
+  <script src="js/modules_seed.js?v=4"></script>
+  <script src="js/storage.js?v=4"></script>
+  <script src="js/admin.js?v=4"></script>
 </body>
 </html>
