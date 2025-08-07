@@ -2,52 +2,52 @@
   "id": "phrasal-verbs-everyday",
   "title": "Phrasal Verbs – Everyday Actions",
   "description": "5 kérdés a mindennapi cselekvésekkel kapcsolatos gyakori phrasal verbekről.",
-  "tags": [],
+  "edu": "A phrasal verb egy ige + partikula (up, on, off, into, through…); jelentése sokszor NEM szó szerint értendő (idiomatikus). Fő típusok: (1) Átmenetes (tárgyas) és elválasztható: put on (put your jacket on / put on your jacket). Ha a tárgy személyes névmás: put it on (a partikula a végére kerül). (2) Átmenetes, de elVÁLASZTHATATLAN: run into (I ran into an old friend). (3) Át nem menetes (tárgy nélküli): get up. Kiejtésnél a hangsúly gyakran a partikulán van (GET UP, PUT ON). A leckében szereplők: get up = felkelni (ágyból), put on = felvenni (ruhát), run into = véletlenül összefutni, put through = telefonon kapcsolni, put off = elhalasztani.",
   "lessons": [
     {
       "id": "q1",
       "type": "mcq",
-      "title": "Választós: Felkelni az ágyból",
+      "title": "Felkelni az ágyból",
       "prompt": "I usually ______ at 7 a.m. on weekdays.",
       "options": ["wake up", "get up", "stand up", "rise up"],
       "answer": "get up",
-      "explain": "‘Get up’ = felkelni az ágyból. A ‘wake up’ csak annyit jelent, hogy felébredsz."
+      "explain": "‘Get up’ = felkelni az ágyból; ‘wake up’ = felébredni."
     },
     {
       "id": "q2",
       "type": "fill",
-      "title": "Kitöltős: Ruhát felvenni",
+      "title": "Ruhát felvenni",
       "prompt": "He quickly ______ his jacket before going outside.",
       "answer": "put on",
       "placeholder": "írj ide egy phrasal verbet",
-      "explain": "‘Put on’ = felvenni ruhát."
+      "explain": "‘Put on’ = felvenni ruhát (elválasztható: put the jacket on / put it on)."
     },
     {
       "id": "q3",
       "type": "mcq",
-      "title": "Választós: Találkozni véletlenül",
+      "title": "Véletlen találkozás",
       "prompt": "I ______ into an old friend at the supermarket.",
       "options": ["ran", "ran into", "bumped", "meet up"],
       "answer": "ran into",
-      "explain": "‘Run into’ = véletlenül összefutni valakivel."
+      "explain": "‘Run into’ = véletlenül összefutni valakivel (nem választható el)."
     },
     {
       "id": "q4",
       "type": "fill",
-      "title": "Kitöltős: Telefonon várakoztatni",
+      "title": "Telefonon kapcsolni",
       "prompt": "Please hold on, I will ______ you through to the manager.",
       "answer": "put",
       "placeholder": "csak az ige első része",
-      "explain": "‘Put through’ = kapcsolni telefonon."
+      "explain": "‘Put through’ = kapcsolni (ige + partikula, tárgy közé NEM tehető)."
     },
     {
       "id": "q5",
       "type": "mcq",
-      "title": "Választós: Elhalasztani",
+      "title": "Elhalasztani",
       "prompt": "They decided to ______ the meeting until next week.",
       "options": ["put away", "put down", "put off", "put up"],
       "answer": "put off",
-      "explain": "‘Put off’ = elhalasztani valamit."
+      "explain": "‘Put off’ = halasztani. Elválasztható: put the meeting off / put it off."
     }
   ]
 }
