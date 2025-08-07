@@ -2,7 +2,8 @@
   "id": "phrasal-verbs-everyday",
   "title": "Phrasal Verbs – Everyday Actions",
   "description": "5 kérdés a mindennapi cselekvésekkel kapcsolatos gyakori phrasal verbekről.",
-  "edu": "A phrasal verb egy ige + partikula (up, on, off, into, through…); jelentése sokszor NEM szó szerint értendő (idiomatikus). Fő típusok: (1) Átmenetes (tárgyas) és elválasztható: put on (put your jacket on / put on your jacket). Ha a tárgy személyes névmás: put it on (a partikula a végére kerül). (2) Átmenetes, de elVÁLASZTHATATLAN: run into (I ran into an old friend). (3) Át nem menetes (tárgy nélküli): get up. Kiejtésnél a hangsúly gyakran a partikulán van (GET UP, PUT ON). A leckében szereplők: get up = felkelni (ágyból), put on = felvenni (ruhát), run into = véletlenül összefutni, put through = telefonon kapcsolni, put off = elhalasztani.",
+  "tags": [],
+  "edu": "A *phrasal verb* egy ige + partikula (up, on, off, into, through…), és gyakran idiomatikus jelentése van.\n\n**Típusok:**\n1. Átmenetes, elválasztható: *put on* (put your jacket on / put it on)\n2. Átmenetes, elválaszthatatlan: *run into* (I ran into an old friend)\n3. Át nem menetes: *get up*\n\n**Tipp:** A jelentés nem mindig következtethető ki szó szerint, ezért kifejezésként tanuld meg.\n\n**A leckében szereplő kifejezések:**\n- get up = felkelni (ágyból)\n- put on = felvenni (ruhát)\n- run into = véletlenül összefutni\n- put through = telefonon kapcsolni\n- put off = elhalasztani",
   "lessons": [
     {
       "id": "q1",
@@ -45,9 +46,4 @@
       "type": "mcq",
       "title": "Elhalasztani",
       "prompt": "They decided to ______ the meeting until next week.",
-      "options": ["put away", "put down", "put off", "put up"],
-      "answer": "put off",
-      "explain": "‘Put off’ = halasztani. Elválasztható: put the meeting off / put it off."
-    }
-  ]
-}
+      "options": ["put away", "]()
