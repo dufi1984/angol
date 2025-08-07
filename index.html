@@ -1,181 +1,124 @@
 <!DOCTYPE html>
 <html lang="hu">
 <head>
-<meta charset="UTF-8">
-<title>Angol Mini – Modul indító</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="css/style.css">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moduláris Angoltanító</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-<div class="container">
-  <h1>Modul indító</h1>
-  <p class="muted">A modulokat a <code>/modules</code> mappából tölti be (manifest.json alapján). Töltés után frissítsd az oldalt.</p>
+    <div class="container">
+        <h1>Moduláris Angoltanító</h1>
+        <p>A modulokat a <code>/modules</code> mappából tölti be (<code>manifest.json</code> alapján).</p>
 
-  <!-- Választó -->
-  <section id="chooser">
-    <div class="head">
-      <select id="moduleSelect"></select>
-      <button id="startBtn" class="btn primary">Indítás</button>
-      <button id="reloadBtn" class="btn ghost" title="Manifest újratöltése">↻</button>
+        <label for="moduleSelect">Válassz modult:</label>
+        <select id="moduleSelect"></select>
+        <button id="startModuleBtn" class="start-btn">Indítás</button>
+
+        <div id="moduleDescription" class="description"></div>
+        <div id="quizContainer" class="quiz-container"></div>
     </div>
-    <div id="meta" class="card">
-      <div id="mTitle" style="font-weight:700"></div>
-      <div id="mDesc" class="muted" style="margin-top:6px"></div>
-      <div id="mTags" style="margin-top:8px"></div>
-    </div>
-  </section>
 
-  <!-- Lejátszó -->
-  <section id="player" class="hidden">
-    <div class="head">
-      <button id="backBtn" class="btn ghost">&larr; Vissza</button>
-      <h2 id="lessonTitle" style="margin:0"></h2>
-    </div>
-    <div id="lessonContent" class="card" style="margin-top:12px"></div>
-    <div class="head" style="justify-content:space-between;margin-top:12px">
-      <button id="prevBtn" class="btn secondary" disabled>Előző</button>
-      <button id="nextBtn" class="btn primary">Tovább</button>
-    </div>
-  </section>
+    <script>
+        async function loadModules() {
+            try {
+                const res = await fetch('modules/manifest.json');
+                const manifest = await res.json();
+                const select = document.getElementById('moduleSelect');
 
-  <div class="footer"><small>Statikus demó • Modulok a repóban (GitHub Pages)</small></div>
-</div>
+                select.innerHTML = ''; // kiürítjük a listát
 
-<script>
-/* ==== Manifest-ből betöltés ==== */
-var ALL = []; // itt tároljuk a betöltött modulokat (nem localStorage)
-async function loadFromManifest(){
-  try{
-    const res = await fetch('modules/manifest.json?cachebust=' + Date.now());
-    if(!res.ok) throw new Error('manifest.json nem érhető el');
-    const man = await res.json();
-    const files = (man.modules || []);
-    const out = [];
-    for (let i=0;i<files.length;i++){
-      const r = await fetch('modules/' + files[i] + '?cachebust=' + Date.now());
-      if (!r.ok) { console.warn('Nem tölthető:', files[i]); continue; }
-      const mod = await r.json();
-      if (mod && mod.id) out.push(mod);
-    }
-    ALL = out;
-  } catch(e){
-    console.error(e);
-    ALL = [];
-  }
-}
+                manifest.forEach(module => {
+                    const option = document.createElement('option');
+                    option.value = module.file;
+                    option.textContent = module.name;
+                    option.dataset.description = module.description || '';
+                    select.appendChild(option);
+                });
 
-/* ==== UI és lejátszó ==== */
-var selectEl = document.getElementById('moduleSelect');
-var startBtn = document.getElementById('startBtn');
-var reloadBtn = document.getElementById('reloadBtn');
-var chooser  = document.getElementById('chooser');
-var player   = document.getElementById('player');
-var mTitle   = document.getElementById('mTitle');
-var mDesc    = document.getElementById('mDesc');
-var mTags    = document.getElementById('mTags');
+                // Első elem leírása megjelenjen
+                if (manifest.length > 0) {
+                    document.getElementById('moduleDescription').textContent =
+                        manifest[0].description || '';
+                }
+            } catch (err) {
+                console.error("Hiba a modulok betöltésekor:", err);
+            }
+        }
 
-var backBtn = document.getElementById('backBtn');
-var prevBtn = document.getElementById('prevBtn');
-var nextBtn = document.getElementById('nextBtn');
-var lessonTitle = document.getElementById('lessonTitle');
-var lessonContent = document.getElementById('lessonContent');
+        document.getElementById('moduleSelect').addEventListener('change', function () {
+            const desc = this.options[this.selectedIndex].dataset.description || '';
+            document.getElementById('moduleDescription').textContent = desc;
+        });
 
-var currentModule = null, idx = 0;
+        document.getElementById('startModuleBtn').addEventListener('click', async function () {
+            const select = document.getElementById('moduleSelect');
+            const selectedFile = select.value;
 
-function populate(){
-  selectEl.innerHTML = '';
-  if (!ALL.length){
-    var o = document.createElement('option');
-    o.value = ''; o.text = 'Nincs modul – tölts fel a /modules mappába';
-    selectEl.appendChild(o);
-    updateMeta(null);
-    return;
-  }
-  for (var i=0;i<ALL.length;i++){
-    var opt = document.createElement('option');
-    opt.value = ALL[i].id; opt.text = ALL[i].title || ALL[i].id;
-    selectEl.appendChild(opt);
-  }
-  updateMeta(ALL[0]);
-}
-function find(id){ for (var i=0;i<ALL.length;i++) if (ALL[i].id===id) return ALL[i]; return null; }
-function updateMeta(mod){
-  if (!mod){ mTitle.textContent='–'; mDesc.textContent='Válassz a listából modult.'; mTags.innerHTML=''; return; }
-  mTitle.textContent = mod.title || mod.id;
-  mDesc.textContent = mod.description || '';
-  mTags.innerHTML = '';
-  var tags = mod.tags||[];
-  for (var i=0;i<tags.length;i++){ var s=document.createElement('span'); s.className='tag'; s.textContent=tags[i]; mTags.appendChild(s); }
-}
+            if (!selectedFile) {
+                alert("Válassz ki egy modult az indításhoz!");
+                return;
+            }
 
-selectEl.onchange = function(){ updateMeta(find(selectEl.value)); };
-startBtn.onclick = function(){ var m=find(selectEl.value); if(!m) return alert('Válassz modult!'); start(m); };
-reloadBtn.onclick = async function(){ await boot(); alert('Manifest újratöltve.'); };
+            try {
+                const res = await fetch(`modules/${selectedFile}`);
+                const moduleData = await res.json();
 
-function start(mod){ currentModule=mod; idx=0; chooser.classList.add('hidden'); player.classList.remove('hidden'); renderStep(); }
+                alert(`A(z) ${selectedFile} modul elindult!`);
+                console.log("Betöltött modul adatok:", moduleData);
 
-function renderStep(){
-  var step = currentModule.lessons[idx];
-  lessonTitle.textContent = step.title || currentModule.title || '';
-  lessonContent.innerHTML = '';
+                renderQuiz(moduleData);
+            } catch (err) {
+                console.error("Hiba a modul betöltésekor:", err);
+            }
+        });
 
-  if (step.type === 'read'){
-    var card = document.createElement('div'); card.className='quiz-card';
-    card.innerHTML = step.content || ''; lessonContent.appendChild(card);
-  }
+        function renderQuiz(questions) {
+            const container = document.getElementById('quizContainer');
+            container.innerHTML = '';
 
-  if (step.type === 'mcq'){
-    var card2 = document.createElement('div'); card2.className='quiz-card';
-    var prompt = document.createElement('div'); prompt.textContent = step.prompt || '';
-    var opts = document.createElement('div'); opts.className = 'options';
-    var arr = step.options || [];
-    for (var i=0;i<arr.length;i++){
-      (function(o){
-        var b=document.createElement('button'); b.className='option'; b.textContent=o;
-        b.onclick=function(){
-          if (b.disabled) return;
-          var ok=(o===step.answer);
-          b.classList.add(ok?'correct':'wrong');
-          if(!ok){ var kids=opts.children; for(var j=0;j<kids.length;j++){ if(kids[j].textContent===step.answer) kids[j].classList.add('correct'); } }
-          var ex=document.createElement('div'); ex.className='muted'; ex.style.marginTop='10px'; ex.textContent=step.explain||'';
-          card2.appendChild(ex); var k=opts.children; for(var t=0;t<k.length;t++) k[t].disabled=true;
-        };
-        opts.appendChild(b);
-      })(arr[i]);
-    }
-    card2.appendChild(prompt); card2.appendChild(opts); lessonContent.appendChild(card2);
-  }
+            questions.forEach((q, idx) => {
+                const qDiv = document.createElement('div');
+                qDiv.classList.add('question');
 
-  if (step.type === 'fill'){
-    var card3=document.createElement('div'); card3.className='quiz-card';
-    var p=document.createElement('div'); p.textContent=step.prompt||'';
-    var input=document.createElement('input'); input.className='input'; input.placeholder=step.placeholder||'';
-    var check=document.createElement('button'); check.className='btn primary'; check.textContent='Ellenőrzés'; check.style.marginTop='10px';
-    var fb=document.createElement('div'); fb.style.marginTop='10px'; fb.style.fontWeight='700';
-    check.onclick=function(){ var v=(input.value||'').trim().toLowerCase(); var a=String(step.answer||'').toLowerCase();
-      fb.textContent=(v===a)?'✅ Helyes!':'❌ Nem ez. Helyes válasz: '+step.answer+(step.explain?('. '+step.explain):''); };
-    card3.appendChild(p); card3.appendChild(input); card3.appendChild(check); card3.appendChild(fb); lessonContent.appendChild(card3);
-  }
+                const qText = document.createElement('p');
+                qText.textContent = `${idx + 1}. ${q.prompt}`;
+                qDiv.appendChild(qText);
 
-  prevBtn.disabled = (idx===0);
-  nextBtn.textContent = (idx===currentModule.lessons.length-1) ? 'Befejezés' : 'Tovább';
-}
-backBtn.onclick=function(){ player.classList.add('hidden'); chooser.classList.remove('hidden'); };
-prevBtn.onclick=function(){ if(idx>0){ idx--; renderStep(); } };
-nextBtn.onclick=function(){ if(idx<currentModule.lessons.length-1){ idx++; renderStep(); } else { alert('Szép munka! Modul befejezve.'); backBtn.click(); } };
+                if (q.type === 'mcq' && q.options) {
+                    q.options.forEach(opt => {
+                        const btn = document.createElement('button');
+                        btn.textContent = opt;
+                        btn.addEventListener('click', () => {
+                            if (opt === q.answer) {
+                                alert("Helyes!");
+                            } else {
+                                alert(`Helytelen! Helyes válasz: ${q.answer}`);
+                            }
+                        });
+                        qDiv.appendChild(btn);
+                    });
+                } else if (q.type === 'fill') {
+                    const input = document.createElement('input');
+                    input.placeholder = q.placeholder || 'Írd ide a választ';
+                    const checkBtn = document.createElement('button');
+                    checkBtn.textContent = "Ellenőrzés";
+                    checkBtn.addEventListener('click', () => {
+                        if (input.value.trim().toLowerCase() === q.answer.toLowerCase()) {
+                            alert("Helyes!");
+                        } else {
+                            alert(`Helytelen! Helyes válasz: ${q.answer}`);
+                        }
+                    });
+                    qDiv.appendChild(input);
+                    qDiv.appendChild(checkBtn);
+                }
 
-/* ==== Boot: manifest betöltés + UI ==== */
-async function boot(){
-  await loadFromManifest();
-  populate();
-  // auto-start ?mod=...
-  var m = /[?&]mod=([^&]+)/.exec(location.search);
-  if (m){ var id=decodeURIComponent(m[1]); for (var i=0;i<selectEl.options.length;i++){ if (selectEl.options[i].value===id) selectEl.selectedIndex=i; }
-    var mod=find(id); if(mod) start(mod);
-  }
-}
-boot();
-</script>
+                container.appendChild(qDiv);
+            });
+        }
+
+        loadModules();
+    </script>
 </body>
 </html>
