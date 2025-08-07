@@ -1,137 +1,195 @@
-(function(){
-  const listEl = document.getElementById('moduleList');
-  const lessonArea = document.getElementById('lessonArea');
-  const lessonTitle = document.getElementById('lessonTitle');
-  const lessonContent = document.getElementById('lessonContent');
-  const backBtn = document.getElementById('backBtn');
-  const prevBtn = document.getElementById('prevBtn');
-  const nextBtn = document.getElementById('nextBtn');
+(function () {
+  // Elems
+  var selectEl = document.getElementById('moduleSelect');
+  var startBtn = document.getElementById('startBtn');
+  var titleMeta = document.getElementById('moduleTitle');
+  var descMeta = document.getElementById('moduleDesc');
+  var tagsMeta = document.getElementById('moduleTags');
 
-  let currentModule = null;
-  let idx = 0;
+  var chooser = document.getElementById('chooser');
+  var lessonArea = document.getElementById('lessonArea');
+  var lessonTitle = document.getElementById('lessonTitle');
+  var lessonContent = document.getElementById('lessonContent');
+  var backBtn = document.getElementById('backBtn');
+  var prevBtn = document.getElementById('prevBtn');
+  var nextBtn = document.getElementById('nextBtn');
 
-  function renderModules(){
-    const mods = (window.StorageAPI.getAll() || []).filter(m => !m.disabled);
-    listEl.innerHTML = '';
-    mods.forEach(m => {
-      const card = document.createElement('div');
-      card.className = 'card';
-      card.innerHTML = \`
-        <div class="title">\${m.title}</div>
-        <div class="desc">\${m.description || ''}</div>
-        <div class="tags">\${(m.tags||[]).map(t=>'<span class="tag">'+t+'</span>').join('')}</div>
-        <div style="margin-top:12px">
-          <button class="primary">Indítás</button>
-        </div>\`;
-      card.querySelector('button').addEventListener('click', () => startModule(m));
-      listEl.appendChild(card);
-    });
+  var currentModule = null;
+  var idx = 0;
+
+  function getMods() {
+    var all = window.StorageAPI.getAll() || [];
+    // csak az engedélyezettek
+    var enabled = [];
+    for (var i = 0; i < all.length; i++) {
+      if (!all[i].disabled) enabled.push(all[i]);
+    }
+    return enabled;
   }
 
-  function startModule(mod){
+  function populateSelect() {
+    var mods = getMods();
+    selectEl.innerHTML = '';
+    if (mods.length === 0) {
+      var opt0 = document.createElement('option');
+      opt0.text = 'Nincs modul – menj a Modulkezelőbe';
+      opt0.value = '';
+      selectEl.appendChild(opt0);
+      updateMeta(null);
+      return;
+    }
+    for (var i = 0; i < mods.length; i++) {
+      var opt = document.createElement('option');
+      opt.value = mods[i].id;
+      opt.text = mods[i].title;
+      selectEl.appendChild(opt);
+    }
+    updateMeta(mods[0]);
+  }
+
+  function findModById(id) {
+    var mods = getMods();
+    for (var i = 0; i < mods.length; i++) if (mods[i].id === id) return mods[i];
+    return null;
+  }
+
+  function updateMeta(mod) {
+    if (!mod) {
+      titleMeta.textContent = '–';
+      descMeta.textContent = 'Válassz a listából egy modult.';
+      tagsMeta.innerHTML = '';
+      return;
+    }
+    titleMeta.textContent = mod.title || 'Ismeretlen modul';
+    descMeta.textContent = mod.description || '';
+    tagsMeta.innerHTML = '';
+    if (mod.tags && mod.tags.length) {
+      for (var i = 0; i < mod.tags.length; i++) {
+        var span = document.createElement('span');
+        span.className = 'tag';
+        span.textContent = mod.tags[i];
+        tagsMeta.appendChild(span);
+      }
+    }
+  }
+
+  selectEl.addEventListener('change', function () {
+    var mod = findModById(selectEl.value);
+    updateMeta(mod);
+  });
+
+  startBtn.addEventListener('click', function () {
+    var mod = findModById(selectEl.value);
+    if (!mod) return alert('Előbb válassz modult.');
+    startModule(mod);
+  });
+
+  function startModule(mod) {
     currentModule = mod;
     idx = 0;
-    document.querySelector('section').classList.add('hidden');
+    chooser.classList.add('hidden');
     lessonArea.classList.remove('hidden');
     renderLesson();
   }
 
-  function renderLesson(){
-    const step = currentModule.lessons[idx];
+  function renderLesson() {
+    var step = currentModule.lessons[idx];
     lessonTitle.textContent = step.title || currentModule.title;
     lessonContent.innerHTML = '';
 
-    if (step.type === 'read'){
-      const card = document.createElement('div');
+    if (step.type === 'read') {
+      var card = document.createElement('div');
       card.className = 'quiz-card';
-      card.innerHTML = step.content;
+      card.innerHTML = step.content || '';
       lessonContent.appendChild(card);
     }
 
-    if (step.type === 'mcq'){
-      const card = document.createElement('div');
-      card.className = 'quiz-card';
-      const prompt = document.createElement('div');
-      prompt.textContent = step.prompt;
-      const opts = document.createElement('div');
+    if (step.type === 'mcq') {
+      var card2 = document.createElement('div');
+      card2.className = 'quiz-card';
+      var prompt = document.createElement('div');
+      prompt.textContent = step.prompt || '';
+      var opts = document.createElement('div');
       opts.className = 'options';
-      step.options.forEach(o => {
-        const btn = document.createElement('button');
-        btn.className = 'option';
-        btn.textContent = o;
-        btn.addEventListener('click', () => {
-          if (btn.disabled) return;
-          const correct = (o === step.answer);
-          btn.classList.add(correct ? 'correct' : 'wrong');
-          if (!correct) {
-            Array.from(opts.children).forEach(b => {
-              if (b.textContent === step.answer) b.classList.add('correct');
-            });
-          }
-          const explain = document.createElement('div');
-          explain.className = 'explain';
-          explain.textContent = step.explain || '';
-          card.appendChild(explain);
-          Array.from(opts.children).forEach(b => b.disabled = true);
-        });
-        opts.appendChild(btn);
-      });
-      card.appendChild(prompt);
-      card.appendChild(opts);
-      lessonContent.appendChild(card);
+      for (var i = 0; i < step.options.length; i++) {
+        (function (o) {
+          var btn = document.createElement('button');
+          btn.className = 'option';
+          btn.textContent = o;
+          btn.addEventListener('click', function () {
+            if (btn.disabled) return;
+            var correct = (o === step.answer);
+            btn.classList.add(correct ? 'correct' : 'wrong');
+            if (!correct) {
+              var children = opts.children;
+              for (var j = 0; j < children.length; j++) {
+                if (children[j].textContent === step.answer) {
+                  children[j].classList.add('correct');
+                }
+              }
+            }
+            var explain = document.createElement('div');
+            explain.className = 'explain';
+            explain.textContent = step.explain || '';
+            card2.appendChild(explain);
+            var kids = opts.children;
+            for (var k = 0; k < kids.length; k++) kids[k].disabled = true;
+          });
+          opts.appendChild(btn);
+        })(step.options[i]);
+      }
+      card2.appendChild(prompt);
+      card2.appendChild(opts);
+      lessonContent.appendChild(card2);
     }
 
-    if (step.type === 'fill'){
-      const card = document.createElement('div');
-      card.className = 'quiz-card';
-      const prompt = document.createElement('div');
-      prompt.textContent = step.prompt;
-      const input = document.createElement('input');
+    if (step.type === 'fill') {
+      var card3 = document.createElement('div');
+      card3.className = 'quiz-card';
+      var prompt2 = document.createElement('div');
+      prompt2.textContent = step.prompt || '';
+      var input = document.createElement('input');
       input.className = 'input fill-input';
       input.placeholder = step.placeholder || '';
-      const check = document.createElement('button');
+      var check = document.createElement('button');
       check.textContent = 'Ellenőrzés';
       check.className = 'primary';
-      const feedback = document.createElement('div');
+      var feedback = document.createElement('div');
       feedback.className = 'feedback';
-      check.addEventListener('click', () => {
-        const val = (input.value || '').trim();
+      check.addEventListener('click', function () {
+        var val = (input.value || '').trim().toLowerCase();
+        var ans = String(step.answer || '').toLowerCase();
         if (!val) return;
-        if (val.toLowerCase() === String(step.answer).toLowerCase()) {
-          feedback.textContent = '✅ Helyes!';
-        } else {
-          feedback.textContent = '❌ Nem ez. Helyes válasz: ' + step.answer + '. ' + (step.explain || '');
-        }
+        feedback.textContent = (val === ans) ? '✅ Helyes!' :
+          ('❌ Nem ez. Helyes válasz: ' + step.answer + (step.explain ? ('. ' + step.explain) : ''));
       });
-      card.appendChild(prompt);
-      card.appendChild(input);
-      card.appendChild(check);
-      card.appendChild(feedback);
-      lessonContent.appendChild(card);
+      card3.appendChild(prompt2);
+      card3.appendChild(input);
+      card3.appendChild(check);
+      card3.appendChild(feedback);
+      lessonContent.appendChild(card3);
     }
 
     prevBtn.disabled = (idx === 0);
     nextBtn.textContent = (idx === currentModule.lessons.length - 1) ? 'Befejezés' : 'Tovább';
   }
 
-  backBtn?.addEventListener('click', () => {
+  backBtn.addEventListener('click', function () {
     lessonArea.classList.add('hidden');
-    document.querySelector('section').classList.remove('hidden');
-    renderModules();
+    chooser.classList.remove('hidden');
+    populateSelect();
   });
 
-  prevBtn?.addEventListener('click', () => {
-    if (idx > 0) { idx--; renderLesson(); }
+  prevBtn.addEventListener('click', function () {
+    if (idx > 0) { idx -= 1; renderLesson(); }
   });
-  nextBtn?.addEventListener('click', () => {
+
+  nextBtn.addEventListener('click', function () {
     if (!currentModule) return;
-    if (idx < currentModule.lessons.length - 1) { idx++; renderLesson(); }
-    else {
-      // End of module
-      alert('Szép munka! Modul befejezve.');
-      backBtn.click();
-    }
+    if (idx < currentModule.lessons.length - 1) { idx += 1; renderLesson(); }
+    else { alert('Szép munka! Modul befejezve.'); backBtn.click(); }
   });
 
-  renderModules();
+  // indulás
+  populateSelect();
 })();
