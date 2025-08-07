@@ -1,4 +1,4 @@
-name: Update manifest.json
+name: update-manifest
 
 on:
   push:
@@ -6,17 +6,19 @@ on:
       - "modules/*.json"
       - "!modules/manifest.json"
 
+permissions:
+  contents: write   # <-- EZ A LÉNYEG
+
 jobs:
   update-manifest:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Generate manifest.json
         run: |
           echo '{ "modules": [' > modules/manifest.json
-          files=$(ls modules/*.json | grep -v manifest.json | sort)
+          files=$(ls modules/*.json | grep -v manifest.json | sort || true)
           count=0
           for f in $files; do
             name=$(basename "$f")
@@ -29,9 +31,7 @@ jobs:
           echo "] }" >> modules/manifest.json
 
       - name: Commit and push manifest.json
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add modules/manifest.json
-          git commit -m "Auto-update manifest.json" || echo "No changes to commit"
-          git push
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Auto-update manifest.json"
+          file_pattern: modules/manifest.json
