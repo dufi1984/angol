@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Angol Mini – Modulok</title>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">Angol Mini</div>
+    <nav>
+      <a href="index.html" class="active">Tanulás</a>
+      <a href="admin.html">Modulkezelő</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section>
+      <h1>Válassz egy modult</h1>
+      <p class="muted">Kattints egy modulra a kezdéshez. Új modulokat a <em>Modulkezelő</em> oldalon adhatsz hozzá.</p>
+
+      <div id="moduleList" class="card-grid"></div>
+    </section>
+
+    <section id="lessonArea" class="lesson hidden">
+      <div class="lesson-head">
+        <button id="backBtn" class="ghost">&larr; Vissza a modulokhoz</button>
+        <h2 id="lessonTitle"></h2>
+      </div>
+      <div id="lessonContent" class="lesson-content"></div>
+      <div id="lessonFooter" class="lesson-footer">
+        <button id="prevBtn" class="secondary" disabled>Előző</button>
+        <button id="nextBtn" class="primary">Tovább</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <small>Statikus demó • Nincs bejelentkezés • Modulok a böngésződben tárolódnak</small>
+  </footer>
+
+  <script src="js/modules_seed.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
