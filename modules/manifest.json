@@ -1,5 +1,7 @@
 { "modules": [
   "modal-verbs-advanced.json"
 ,
+  "phrasal-verbs-everyday.json"
+,
   "telling-time.json"
 ] }
