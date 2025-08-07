@@ -1,0 +1,28 @@
+/* Modul választó stílus */
+#moduleSelect {
+  background: #111827;          /* sötét háttér */
+  color: #e5e7eb;               /* világos szöveg */
+  border: 1px solid #334155;
+  padding: 6px 10px;
+  font-size: 16px;
+  border-radius: 4px;
+}
+
+/* Lenyíló elemek */
+#moduleSelect option {
+  background: #111827;
+  color: #e5e7eb;
+}
+
+/* Hover és kiválasztott elem */
+#moduleSelect option:checked,
+#moduleSelect option:hover {
+  background: #1f2937 !important;
+  color: #ffffff;
+}
+
+/* Fókuszkeret */
+#moduleSelect:focus {
+  outline: 2px solid #60a5fa;
+  outline-offset: 2px;
+}
