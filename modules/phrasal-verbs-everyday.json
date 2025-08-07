@@ -1,0 +1,53 @@
+{
+  "id": "phrasal-verbs-everyday",
+  "title": "Phrasal Verbs – Everyday Actions",
+  "description": "5 kérdés a mindennapi cselekvésekkel kapcsolatos gyakori phrasal verbekről.",
+  "tags": [],
+  "questions": [
+    {
+      "id": "q1",
+      "type": "mcq",
+      "title": "Választós: Felkelni az ágyból",
+      "prompt": "I usually ______ at 7 a.m. on weekdays.",
+      "options": ["wake up", "get up", "stand up", "rise up"],
+      "answer": "get up",
+      "explain": "‘Get up’ = felkelni az ágyból. A ‘wake up’ csak annyit jelent, hogy felébredsz."
+    },
+    {
+      "id": "q2",
+      "type": "fill",
+      "title": "Kitöltős: Ruhát felvenni",
+      "prompt": "He quickly ______ his jacket before going outside.",
+      "answer": "put on",
+      "placeholder": "írj ide egy phrasal verbet",
+      "explain": "‘Put on’ = felvenni ruhát."
+    },
+    {
+      "id": "q3",
+      "type": "mcq",
+      "title": "Választós: Találkozni véletlenül",
+      "prompt": "I ______ into an old friend at the supermarket.",
+      "options": ["ran", "ran into", "bumped", "meet up"],
+      "answer": "ran into",
+      "explain": "‘Run into’ = véletlenül összefutni valakivel."
+    },
+    {
+      "id": "q4",
+      "type": "fill",
+      "title": "Kitöltős: Telefonon várakoztatni",
+      "prompt": "Please hold on, I will ______ you through to the manager.",
+      "answer": "put",
+      "placeholder": "csak az ige első része",
+      "explain": "‘Put through’ = kapcsolni telefonon."
+    },
+    {
+      "id": "q5",
+      "type": "mcq",
+      "title": "Választós: Elhalasztani",
+      "prompt": "They decided to ______ the meeting until next week.",
+      "options": ["put away", "put down", "put off", "put up"],
+      "answer": "put off",
+      "explain": "‘Put off’ = elhalasztani valamit."
+    }
+  ]
+}
