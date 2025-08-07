@@ -106,7 +106,7 @@ async function loadManifestAndModules(){
 // ====== LEJÁTSZÓ ======
 function startModule(mod) {
   current = mod;
-  stepIndex = -1; // -1 = EDU (ha van)
+  stepIndex = current.edu ? -1 : 0; // ha nincs EDU, induljon az első kérdéssel
   document.querySelector('.module-bar').classList.add('hidden');
   meta.classList.add('hidden');
   player.classList.remove('hidden');
