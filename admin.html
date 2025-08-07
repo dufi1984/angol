@@ -34,6 +34,12 @@
   <footer class="footer">
     <small>Statikus demó • Modulok a böngésző helyi tárában (localStorage)</small>
   </footer>
+<script>
+window.onerror = (m, s, l, c, e) => {
+  alert("JS hiba: " + m + " @ " + s + ":" + l);
+};
+console.log("Admin betöltve, SEED:", !!window.SEED_MODULES);
+</script>
 
   <script src="js/modules_seed.js"></script>
   <script src="js/storage.js"></script>
