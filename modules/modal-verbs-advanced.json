@@ -2,7 +2,7 @@
   "id": "modal-verbs-advanced",
   "title": "Modal Verbs – Haladó",
   "description": "Haladó gyakorlófeladatok a módbeli segédigékről.",
-  "tags": [],
+  "edu": "A módbeli segédigék (modal verbs) a főige előtt állnak és jelentést módosítanak (képesség, valószínűség, kötelesség, tiltás, tanács, udvariasság). Nyelvtani szabályok: (1) NINCS -s 3. személyben: She can swim. (2) Utánuk az ige ALAPFORMÁJA jön: must go, should see. (3) Negatív: modal + not (can’t, shouldn’t, mustn’t). (4) Múltbeli következtetés/valószínűség: modal + have + V3 (might have lost, must have left). Jelentéskülönbségek: MUST = erős bizonyosság/kötelezettség (He must be at work. / You must wear a helmet.), CAN’T = erős tagadó következtetés (He can’t be 50.), SHOULD = tanács (You should rest.), MIGHT/COULD/MAY = lehetőség (It might rain.), COULD/WOULD = udvarias kérés (Could you…?).",
   "lessons": [
     {
       "id": "q1",
@@ -11,7 +11,7 @@
       "prompt": "He _______ be at the meeting, I saw his car outside.",
       "options": ["must", "might", "can't", "should"],
       "answer": "must",
-      "explain": "Biztos következtetés jelenre → must."
+      "explain": "Erős, pozitív következtetés jelenre → must."
     },
     {
       "id": "q2",
@@ -29,7 +29,7 @@
       "prompt": "She _______ have taken the wrong train, that’s why she’s late.",
       "options": ["must", "might", "could", "can't"],
       "answer": "might",
-      "explain": "Lehetőség (múlt) → might have."
+      "explain": "Múltbeli lehetőség → might have + V3."
     },
     {
       "id": "q4",
@@ -38,7 +38,7 @@
       "prompt": "All passengers _______ present their tickets upon boarding.",
       "answer": "must",
       "placeholder": "írj ide egy segédigét",
-      "explain": "Kötelezettség → must."
+      "explain": "Szabály/kötelezettség → must."
     },
     {
       "id": "q5",
@@ -47,7 +47,7 @@
       "prompt": "You _______ park here, it’s a no-parking zone.",
       "options": ["must", "can't", "shouldn't", "might not"],
       "answer": "can't",
-      "explain": "Tiltás → can't."
+      "explain": "Tiltás / lehetetlenség → can’t."
     }
   ]
 }
