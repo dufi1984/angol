@@ -1,85 +1,69 @@
-body {
-    background-color: #0d1117;
-    color: #c9d1d9;
-    font-family: Arial, sans-serif;
+:root{
+  --bg:#0f172a;        /* háttér */
+  --card:#111827;      /* kártya */
+  --text:#e5e7eb;      /* szöveg */
+  --muted:#94a3b8;     /* halvány */
+  --b:#334155;         /* keret */
+  --accent:#22c55e;    /* zöld */
+  --accent2:#60a5fa;   /* kék */
+  --danger:#ef4444;    /* piros */
 }
 
-.container {
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 20px;
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+
+.container{max-width:900px;margin:28px auto;padding:0 16px}
+h1{margin:0 0 16px;font-size:42px;color:var(--accent);font-weight:800}
+
+.module-bar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+label{color:var(--text);opacity:.95}
+
+select{
+  background:#161b22;color:var(--text);
+  border:1px solid var(--b);border-radius:10px;
+  padding:10px 12px;font-size:16px;min-width:240px;
+}
+select:focus{outline:2px solid var(--accent2);outline-offset:2px}
+select option{background:#161b22;color:var(--text)}
+select option:checked, select option:hover{background:#1f2937 !important}
+
+.btn{
+  cursor:pointer;border:none;border-radius:10px;
+  padding:10px 14px;font-weight:700;font-size:16px
+}
+.btn.primary{background:var(--accent);color:#052e16}
+.btn.secondary{background:var(--accent2);color:#0b1220}
+.btn.ghost{background:transparent;border:1px solid var(--b);color:var(--text)}
+
+.card{
+  background:radial-gradient(1200px 600px at -20% -20%,rgba(255,255,255,.08),transparent 50%),var(--card);
+  border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:16px
+}
+.hidden{display:none}
+
+.meta-title{font-weight:800;font-size:20px;margin-bottom:6px}
+.meta-desc{color:var(--muted);margin-bottom:8px}
+.meta-tags .tag{
+  font-size:12px;padding:4px 8px;border:1px solid rgba(255,255,255,.12);
+  border-radius:999px;color:var(--muted);margin-right:8px;display:inline-block
 }
 
-h1 {
-    color: #2ecc71;
+.player-head{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:16px 0 8px}
+.player-head h2{margin:0}
+
+.content{line-height:1.6}
+.prompt{font-weight:600;margin-bottom:10px}
+.input{
+  background:#0b1220;color:var(--text);border:1px solid var(--b);
+  border-radius:10px;padding:10px 12px;min-width:240px;margin-right:8px
 }
 
-.module-selector {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 10px;
-}
+.quiz .options{display:grid;gap:8px}
+.option{background:#182031;color:var(--text);border:1px solid var(--b)}
+.option.ok{border-color:#16a34a;box-shadow:0 0 0 2px rgba(34,197,94,.35) inset}
+.option.wrong{border-color:#b91c1c;box-shadow:0 0 0 2px rgba(239,68,68,.35) inset}
+.explain{color:var(--muted);margin-top:10px}
 
-select {
-    padding: 5px;
-    border-radius: 5px;
-    border: 1px solid #30363d;
-    background-color: #161b22;
-    color: #c9d1d9;
-}
+.player-nav{display:flex;justify-content:space-between;gap:12px;margin-top:16px}
 
-.start-btn {
-    background-color: #2ecc71;
-    border: none;
-    color: #fff;
-    padding: 5px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.start-btn:hover {
-    background-color: #27ae60;
-}
-
-.description {
-    margin: 10px 0 20px 0;
-    font-style: italic;
-    color: #8b949e;
-}
-
-.quiz-container {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.question {
-    background-color: #161b22;
-    padding: 15px;
-    border-radius: 8px;
-}
-
-.answer-btn,
-.check-btn {
-    margin: 5px;
-    padding: 5px 10px;
-    border: none;
-    background-color: #238636;
-    color: white;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.answer-btn:hover,
-.check-btn:hover {
-    background-color: #2ea043;
-}
-
-input {
-    padding: 5px;
-    margin-right: 5px;
-    border-radius: 5px;
-    border: 1px solid #30363d;
-    background-color: #0d1117;
-    color: white;
-}
+.error{border-color:#7f1d1d;background:#1b0b0b;color:#fca5a5}
