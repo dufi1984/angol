@@ -1,123 +1,231 @@
 <!DOCTYPE html>
 <html lang="hu">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Moduláris Angoltanító</title>
-    <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Moduláris Angoltanító</title>
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-    <div class="container">
-        <h1>Moduláris Angoltanító</h1>
+  <div class="container">
+    <h1>Moduláris Angoltanító</h1>
 
-        <div class="module-selector">
-            <label for="moduleSelect">Válassz modult:</label>
-            <select id="moduleSelect"></select>
-            <button id="startModuleBtn" class="start-btn">Indítás</button>
-        </div>
-
-        <div id="moduleDescription" class="description"></div>
-        <div id="quizContainer" class="quiz-container"></div>
+    <div class="module-bar">
+      <label for="moduleSelect">Válassz modult:</label>
+      <select id="moduleSelect"></select>
+      <button id="startBtn" class="btn primary">Indítás</button>
     </div>
 
-    <script>
-        async function loadModules() {
-            try {
-                const res = await fetch('modules/manifest.json');
-                const manifest = await res.json();
-                const select = document.getElementById('moduleSelect');
+    <div id="moduleMeta" class="meta card hidden">
+      <div id="mTitle" class="meta-title"></div>
+      <div id="mDesc" class="meta-desc"></div>
+      <div id="mTags" class="meta-tags"></div>
+    </div>
 
-                select.innerHTML = '';
+    <div id="player" class="hidden">
+      <div class="player-head">
+        <button id="backBtn" class="btn ghost">&larr; Vissza</button>
+        <h2 id="lessonTitle"></h2>
+      </div>
+      <div id="lessonContent" class="card"></div>
+      <div class="player-nav">
+        <button id="prevBtn" class="btn secondary" disabled>Előző</button>
+        <button id="nextBtn" class="btn primary">Tovább</button>
+      </div>
+    </div>
 
-                manifest.forEach(module => {
-                    const option = document.createElement('option');
-                    option.value = module.file;
-                    option.textContent = module.name;
-                    option.dataset.description = module.description || '';
-                    select.appendChild(option);
-                });
+    <div id="errorBox" class="card error hidden"></div>
+  </div>
 
-                if (manifest.length > 0) {
-                    document.getElementById('moduleDescription').textContent =
-                        manifest[0].description || '';
-                }
-            } catch (err) {
-                console.error("Hiba a modulok betöltésekor:", err);
-            }
+  <script>
+    // ---- Állapot ----
+    let ALL = [];            // betöltött modul-objektumok
+    let current = null;      // éppen futó modul
+    let stepIndex = 0;       // lecke index
+
+    // ---- Elems ----
+    const sel   = document.getElementById('moduleSelect');
+    const start = document.getElementById('startBtn');
+    const meta  = document.getElementById('moduleMeta');
+    const mTitle= document.getElementById('mTitle');
+    const mDesc = document.getElementById('mDesc');
+    const mTags = document.getElementById('mTags');
+
+    const player = document.getElementById('player');
+    const backBtn= document.getElementById('backBtn');
+    const prevBtn= document.getElementById('prevBtn');
+    const nextBtn= document.getElementById('nextBtn');
+    const lTitle = document.getElementById('lessonTitle');
+    const lCont  = document.getElementById('lessonContent');
+
+    const errBox = document.getElementById('errorBox');
+
+    // ---- Segédek ----
+    function showError(msg){
+      errBox.textContent = msg;
+      errBox.classList.remove('hidden');
+    }
+    function clearError(){
+      errBox.classList.add('hidden');
+      errBox.textContent = '';
+    }
+    function setMeta(mod){
+      if(!mod){ meta.classList.add('hidden'); return; }
+      meta.classList.remove('hidden');
+      mTitle.textContent = mod.title || mod.id || '(névtelen modul)';
+      mDesc.textContent  = mod.description || '';
+      mTags.innerHTML    = '';
+      (mod.tags || []).forEach(t=>{
+        const span = document.createElement('span');
+        span.className = 'tag'; span.textContent = t;
+        mTags.appendChild(span);
+      });
+    }
+    function populate(){
+      sel.innerHTML = '';
+      if(!ALL.length){
+        const o = document.createElement('option');
+        o.value=''; o.textContent='Nincs elérhető modul'; sel.appendChild(o);
+        start.disabled = true;
+        setMeta(null);
+        return;
+      }
+      start.disabled = false;
+      ALL.forEach((m,i)=>{
+        const o = document.createElement('option');
+        o.value = m.id; o.textContent = m.title || m.id;
+        sel.appendChild(o);
+      });
+      setMeta(ALL[0]);
+    }
+    function findById(id){ return ALL.find(m=>m.id===id) || null; }
+
+    // ---- Betöltés manifestből (string-lista formátum) ----
+    async function loadManifestAndModules(){
+      clearError();
+      try{
+        const res = await fetch('modules/manifest.json?cb=' + Date.now());
+        if(!res.ok) throw new Error('manifest.json nem tölthető (HTTP ' + res.status + ')');
+        const man = await res.json();
+
+        // Támogatás: ha {modules:[ "a.json", ... ]} formátum
+        let files = [];
+        if (Array.isArray(man)) {
+          // ha valaki listát tett oda, akkor próbáljuk kiszedni a .file kulcsot
+          files = man.map(x => x.file).filter(Boolean);
+        } else if (man && Array.isArray(man.modules)) {
+          files = man.modules.slice();
+        } else {
+          throw new Error('manifest formátum ismeretlen');
         }
 
-        document.getElementById('moduleSelect').addEventListener('change', function () {
-            const desc = this.options[this.selectedIndex].dataset.description || '';
-            document.getElementById('moduleDescription').textContent = desc;
-        });
-
-        document.getElementById('startModuleBtn').addEventListener('click', async function () {
-            const select = document.getElementById('moduleSelect');
-            const selectedFile = select.value;
-
-            if (!selectedFile) {
-                alert("Válassz ki egy modult az indításhoz!");
-                return;
+        const loaded = [];
+        for (const f of files){
+          try{
+            const r = await fetch('modules/' + f + '?cb=' + Date.now());
+            if(!r.ok) { console.warn('Nem tölthető:', f); continue; }
+            const mod = await r.json();
+            if (mod && mod.id && Array.isArray(mod.lessons)) {
+              loaded.push(mod);
+            } else {
+              console.warn('Hibás modul szerkezet:', f);
             }
-
-            try {
-                const res = await fetch(`modules/${selectedFile}`);
-                const moduleData = await res.json();
-
-                renderQuiz(moduleData);
-            } catch (err) {
-                console.error("Hiba a modul betöltésekor:", err);
-            }
-        });
-
-        function renderQuiz(questions) {
-            const container = document.getElementById('quizContainer');
-            container.innerHTML = '';
-
-            questions.forEach((q, idx) => {
-                const qDiv = document.createElement('div');
-                qDiv.classList.add('question');
-
-                const qText = document.createElement('p');
-                qText.textContent = `${idx + 1}. ${q.prompt}`;
-                qDiv.appendChild(qText);
-
-                if (q.type === 'mcq' && q.options) {
-                    q.options.forEach(opt => {
-                        const btn = document.createElement('button');
-                        btn.classList.add('answer-btn');
-                        btn.textContent = opt;
-                        btn.addEventListener('click', () => {
-                            if (opt === q.answer) {
-                                alert("Helyes!");
-                            } else {
-                                alert(`Helytelen! Helyes válasz: ${q.answer}`);
-                            }
-                        });
-                        qDiv.appendChild(btn);
-                    });
-                } else if (q.type === 'fill') {
-                    const input = document.createElement('input');
-                    input.placeholder = q.placeholder || 'Írd ide a választ';
-                    const checkBtn = document.createElement('button');
-                    checkBtn.textContent = "Ellenőrzés";
-                    checkBtn.classList.add('check-btn');
-                    checkBtn.addEventListener('click', () => {
-                        if (input.value.trim().toLowerCase() === q.answer.toLowerCase()) {
-                            alert("Helyes!");
-                        } else {
-                            alert(`Helytelen! Helyes válasz: ${q.answer}`);
-                        }
-                    });
-                    qDiv.appendChild(input);
-                    qDiv.appendChild(checkBtn);
-                }
-
-                container.appendChild(qDiv);
-            });
+          }catch(e){
+            console.warn('Betöltési hiba:', f, e);
+          }
         }
+        ALL = loaded;
+      }catch(e){
+        showError('Hiba a modulok betöltésekor: ' + e.message);
+        ALL = [];
+      }
+    }
 
-        loadModules();
-    </script>
+    // ---- Lejátszó ----
+    function startModule(mod){
+      current = mod; stepIndex = 0;
+      document.querySelector('.module-bar').classList.add('hidden');
+      meta.classList.add('hidden');
+      player.classList.remove('hidden');
+      renderStep();
+      // görgess a playerhez
+      player.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    function renderStep(){
+      const step = current.lessons[stepIndex];
+      lTitle.textContent = step.title || current.title || '';
+      lCont.innerHTML = '';
+
+      if (step.type === 'read'){
+        const div = document.createElement('div');
+        div.className = 'content';
+        div.innerHTML = step.content || '';
+        lCont.appendChild(div);
+      }
+
+      if (step.type === 'mcq'){
+        const wrap = document.createElement('div'); wrap.className='quiz';
+        const p = document.createElement('div'); p.className='prompt'; p.textContent = step.prompt || '';
+        const optBox = document.createElement('div'); optBox.className='options';
+        (step.options || []).forEach(opt=>{
+          const b = document.createElement('button'); b.className='btn option'; b.textContent = opt;
+          b.onclick = ()=>{
+            const ok = (opt === step.answer);
+            b.classList.add(ok ? 'ok' : 'wrong');
+            [...optBox.children].forEach(x=>x.disabled=true);
+            if(step.explain){
+              const ex = document.createElement('div'); ex.className='explain'; ex.textContent = step.explain;
+              wrap.appendChild(ex);
+            }
+          };
+          optBox.appendChild(b);
+        });
+        wrap.appendChild(p); wrap.appendChild(optBox); lCont.appendChild(wrap);
+      }
+
+      if (step.type === 'fill'){
+        const wrap = document.createElement('div'); wrap.className='quiz';
+        const p = document.createElement('div'); p.className='prompt'; p.textContent = step.prompt || '';
+        const input = document.createElement('input'); input.className='input'; input.placeholder = step.placeholder || '';
+        const check = document.createElement('button'); check.className='btn primary'; check.textContent='Ellenőrzés';
+        const fb = document.createElement('div'); fb.className='explain';
+        check.onclick = ()=>{
+          const v = (input.value || '').trim().toLowerCase();
+          const a = String(step.answer || '').toLowerCase();
+          fb.textContent = (v === a) ? '✅ Helyes!' : ('❌ Nem ez. Helyes: ' + step.answer + (step.explain ? (' — ' + step.explain) : ''));
+        };
+        wrap.appendChild(p); wrap.appendChild(input); wrap.appendChild(check); wrap.appendChild(fb);
+        lCont.appendChild(wrap);
+      }
+
+      prevBtn.disabled = (stepIndex === 0);
+      nextBtn.textContent = (stepIndex === current.lessons.length - 1) ? 'Befejezés' : 'Tovább';
+    }
+
+    // ---- Események ----
+    sel.onchange = ()=> setMeta(findById(sel.value));
+    start.onclick = ()=> {
+      const m = findById(sel.value);
+      if(!m) return;
+      startModule(m);
+    };
+    backBtn.onclick = ()=>{
+      player.classList.add('hidden');
+      document.querySelector('.module-bar').classList.remove('hidden');
+      setMeta(findById(sel.value));
+      window.scrollTo({top:0, behavior:'smooth'});
+    };
+    prevBtn.onclick = ()=>{ if(stepIndex>0){ stepIndex--; renderStep(); } };
+    nextBtn.onclick = ()=>{
+      if(stepIndex < current.lessons.length - 1){ stepIndex++; renderStep(); }
+      else { alert('Szép munka! Modul befejezve.'); backBtn.click(); }
+    };
+
+    // ---- Boot ----
+    (async function(){
+      await loadManifestAndModules();
+      populate();
+    })();
+  </script>
 </body>
 </html>
