@@ -1,3 +1,5 @@
 { "modules": [
   "modal-verbs-advanced.json"
+,
+  "telling-time.json"
 ] }
