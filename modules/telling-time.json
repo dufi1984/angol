@@ -1,0 +1,53 @@
+{
+  "id": "telling-time",
+  "title": "Telling the Time – Idő kifejezése angolul",
+  "description": "5 kérdés az óra és idő kifejezéseiről angolul.",
+  "tags": ["time", "A2–B1", "vocabulary"],
+  "lessons": [
+    {
+      "id": "q1",
+      "type": "mcq",
+      "title": "Hány óra van?",
+      "prompt": "It's 07:15. Hogyan mondjuk ezt angolul?",
+      "options": ["quarter past seven", "quarter to seven", "half past seven", "seven fifteen pm"],
+      "answer": "quarter past seven",
+      "explain": "07:15 = quarter past seven (negyed nyolc)."
+    },
+    {
+      "id": "q2",
+      "type": "mcq",
+      "title": "Helyes kifejezés",
+      "prompt": "It's 18:45. Melyik a helyes kifejezés?",
+      "options": ["quarter past six", "quarter to seven", "six forty-five", "both B and C"],
+      "answer": "both B and C",
+      "explain": "18:45 = quarter to seven vagy six forty-five."
+    },
+    {
+      "id": "q3",
+      "type": "fill",
+      "title": "Kitöltős",
+      "prompt": "It's 12:30 → It's ______ past twelve.",
+      "answer": "half",
+      "placeholder": "egy szó",
+      "explain": "12:30 = half past twelve."
+    },
+    {
+      "id": "q4",
+      "type": "mcq",
+      "title": "AM vagy PM?",
+      "prompt": "You have lunch at 1:00 in the afternoon. How do you write it?",
+      "options": ["1:00 am", "1:00 pm", "13:00 am", "13:00 pm"],
+      "answer": "1:00 pm",
+      "explain": "Délután 1 óra → pm."
+    },
+    {
+      "id": "q5",
+      "type": "fill",
+      "title": "Idióma",
+      "prompt": "Complete: Time ______ when you're having fun.",
+      "answer": "flies",
+      "placeholder": "ige",
+      "explain": "'Time flies' = Repül az idő."
+    }
+  ]
+}
