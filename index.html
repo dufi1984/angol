@@ -1,112 +1,44 @@
 <!DOCTYPE html>
 <html lang="hu">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Modulkezelő – Angol Mini</title>
+<meta charset="UTF-8">
+<title>Angol Mini – Modul indító</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-:root{--bg:#0f172a;--card:#111827;--muted:#94a3b8;--text:#e5e7eb;--accent:#22c55e;--accent2:#60a5fa;--danger:#ef4444}
-*{box-sizing:border-box}html,body{margin:0;padding:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--text);background:#0f172a}
-.topbar{position:sticky;top:0;display:flex;justify-content:space-between;align-items:center;padding:12px 20px;background:rgba(17,24,39,.85);border-bottom:1px solid rgba(255,255,255,.06)}
-.topbar nav a{color:var(--text);text-decoration:none;margin-left:12px;padding:8px 12px;border-radius:8px}
-.topbar nav a.active{background:rgba(255,255,255,.08)}
-.container{max-width:920px;margin:24px auto;padding:0 16px}
-.card{background:radial-gradient(1200px 600px at -20% -20%,rgba(255,255,255,.08),transparent 50%),var(--card);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:16px}
-.btn{cursor:pointer;border:none;border-radius:10px;padding:10px 14px;font-weight:700}
-.primary{background:var(--accent);color:#052e16}.secondary{background:var(--accent2);color:#0b1220}.ghost{background:transparent;border:1px solid rgba(255,255,255,.18);color:var(--text)}
-.admin-list{display:grid;gap:16px;margin-top:16px}.admin-item{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}
-.tag{font-size:.75rem;padding:4px 8px;border:1px solid rgba(255,255,255,.12);border-radius:999px;color:#94a3b8;margin-right:8px}
-.muted{color:#94a3b8}
+body { font-family: sans-serif; background: #0f172a; color: white; margin: 0; padding: 20px; }
+h1 { color: #22c55e; }
+select, button { padding: 10px; margin-top: 10px; font-size: 16px; border-radius: 6px; border: none; }
+button { background: #22c55e; color: black; cursor: pointer; }
+button:hover { background: #16a34a; }
 </style>
 </head>
 <body>
-<header class="topbar">
-  <div class="brand">Angol Mini</div>
-  <nav>
-    <a href="index.html">Tanulás</a>
-    <a href="admin.html" class="active">Modulkezelő</a>
-  </nav>
-</header>
+<h1>Modul indító</h1>
+<p>Válassz modult és indítsd el:</p>
 
-<main class="container">
-  <section class="admin">
-    <h1>Modulkezelő</h1>
-    <p class="muted">Tölts fel JSON modulokat, engedélyezd/tiltsd, töröld vagy exportáld őket.</p>
-
-    <div class="card" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
-      <label for="fileInput" class="btn primary">+ Modul feltöltése (.json)</label>
-      <input id="fileInput" type="file" accept="application/json" hidden/>
-      <button id="exportBtn" class="btn secondary">Minden modul exportálása</button>
-      <button id="resetBtn" class="btn ghost">Alaphelyzet (seed újratöltése)</button>
-    </div>
-
-    <div id="adminList" class="admin-list"></div>
-  </section>
-</main>
-
-<footer style="text-align:center;color:#94a3b8;padding:16px;border-top:1px solid rgba(255,255,255,.08)">Statikus demó • Modulok a böngésző helyi tárában (localStorage)</footer>
+<select id="moduleSelect"></select>
+<br>
+<button onclick="startModule()">Indítás</button>
 
 <script>
-// --- Ugyanaz a StorageAPI, mint az index-ben ---
-(function(){
-  var KEY='tt_modules_v1';
-  function load(){ try{ var raw=localStorage.getItem(KEY); return raw?JSON.parse(raw):null; }catch(e){ return null; } }
-  function save(mods){ localStorage.setItem(KEY, JSON.stringify(mods)); }
-  function seedIfEmpty(){ var cur=load(); if(!cur||!cur.length){ cur=(window.SEED_MODULES||[]); save(cur);} return cur; }
-  function getAll(){ return seedIfEmpty(); }
-  function setEnabled(id, enabled){ var mods=getAll().map(function(m){ return m.id===id?{id:m.id,title:m.title,language:m.language,description:m.description,tags:m.tags,lessons:m.lessons,disabled:!enabled}:m;}); save(mods); }
-  function remove(id){ var mods=getAll().filter(function(m){ return m.id!==id; }); save(mods); }
-  function add(mod){ var mods=getAll(); var i=-1; for(var k=0;k<mods.length;k++){ if(mods[k].id===mod.id){ i=k; break; } } if(i>=0) mods[i]=mod; else mods.push(mod); save(mods); }
-  function exportAll(){ var data=JSON.stringify(getAll(),null,2); var blob=new Blob([data],{type:'application/json'}); var url=URL.createObjectURL(blob); var a=document.createElement('a'); a.href=url; a.download='modules_export.json'; a.click(); URL.revokeObjectURL(url); }
-  window.StorageAPI={getAll:getAll,setEnabled:setEnabled,remove:remove,add:add,exportAll:exportAll,save:save,load:load,seedIfEmpty:seedIfEmpty};
-})();
-
-// --- Seed (ugyanaz, hogy biztos legyen) ---
-window.SEED_MODULES = [{
-  id:"modal-verbs-basic", title:"Modal Verbs – Alapok", language:"en",
-  description:"Mikor használjuk a can, could, may, might, must, should, will, would segédigéket?",
-  tags:["grammar","A2–B1","modal verbs"],
-  lessons:[{id:"intro",type:"read",title:"Bevezetés",content:"<p>Modalok röviden…</p>"}]
-}];
-
-// --- Admin UI ---
-(function(){
-  var listEl=document.getElementById('adminList');
-  var fileInput=document.getElementById('fileInput');
-  var exportBtn=document.getElementById('exportBtn');
-  var resetBtn=document.getElementById('resetBtn');
-
-  function render(){
-    var mods=window.StorageAPI.getAll(); listEl.innerHTML='';
-    for(var i=0;i<mods.length;i++){ (function(m){
-      var row=document.createElement('div'); row.className='card admin-item';
-      var tags=''; var t=m.tags||[]; for(var k=0;k<t.length;k++) tags+='<span class="tag">'+t[k]+'</span>';
-      row.innerHTML='<div><div class="title">'+(m.title||'')+'</div><div class="muted">'+(m.description||'')+'</div><div>'+tags+'</div></div>'
-       +'<div><button class="btn '+(m.disabled?'secondary':'ghost')+' toggle">'+(m.disabled?'Engedélyezés':'Letiltás')+'</button> '
-       +'<button class="btn" style="background:#ef4444;color:#fff">Törlés</button> '
-       +'<button class="btn ghost dump">Export</button></div>';
-      row.querySelector('.toggle').onclick=function(){ window.StorageAPI.setEnabled(m.id, m.disabled===true); render(); };
-      row.querySelector('.dump').onclick=function(){ var blob=new Blob([JSON.stringify(m,null,2)],{type:'application/json'}); var url=URL.createObjectURL(blob); var a=document.createElement('a'); a.href=url; a.download=(m.id||'module')+'.json'; a.click(); URL.revokeObjectURL(url); };
-      row.querySelector('button[style]').onclick=function(){ if(confirm('Biztos törlöd?')){ window.StorageAPI.remove(m.id); render(); } };
-      listEl.appendChild(row);
-    })(mods[i]);}
-  }
-
-  if(fileInput){ fileInput.onchange=function(e){
-    var f=e.target.files&&e.target.files[0]; if(!f) return;
-    var r=new FileReader(); r.onload=function(){ try{
-      var mod=JSON.parse(r.result);
-      if(!mod.id||!mod.title||!mod.lessons||!mod.lessons.length) throw new Error('Hiányzó mezők (id, title, lessons).');
-      window.StorageAPI.add(mod); alert('Modul hozzáadva: '+mod.title); render();
-    }catch(err){ alert('Hibás modul fájl: '+err.message); } finally{ fileInput.value=''; } };
-    r.readAsText(f,'utf-8');
-  } }
-
-  if(exportBtn) exportBtn.onclick=function(){ window.StorageAPI.exportAll(); };
-  if(resetBtn) resetBtn.onclick=function(){ localStorage.removeItem('tt_modules_v1'); window.StorageAPI.seedIfEmpty(); render(); };
-
-  render();
-})();
+function loadModules() {
+    let modules = JSON.parse(localStorage.getItem("modules") || "[]");
+    let select = document.getElementById("moduleSelect");
+    select.innerHTML = "";
+    modules.forEach(m => {
+        let opt = document.createElement("option");
+        opt.value = m.id;
+        opt.textContent = m.title;
+        select.appendChild(opt);
+    });
+}
+function startModule() {
+    let select = document.getElementById("moduleSelect");
+    let moduleId = select.value;
+    if (!moduleId) return alert("Válassz modult!");
+    alert("A(z) " + moduleId + " modul elindult!");
+}
+loadModules();
 </script>
 </body>
 </html>
