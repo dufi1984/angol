@@ -3,7 +3,6 @@
   "title": "Telling the Time",
   "description": "Gyakorlás az idő kifejezésére angolul.",
   "tags": [],
-  "edu": [],
   "lessons": [
     {
       "id": "q1",
@@ -12,7 +11,7 @@
       "prompt": "08:15 angolul helyesen:",
       "options": ["eight fifteen", "quarter past eight", "eight and fifteen", "fifteen past eight"],
       "answer": "quarter past eight",
-      "explain": "08:15 = quarter past eight, mert negyed múlt nyolc."
+      "explain": "08:15 = quarter past eight (negyed múlt nyolc)."
     },
     {
       "id": "q2",
@@ -30,7 +29,7 @@
       "prompt": "09:45 angolul:",
       "options": ["quarter past nine", "quarter to ten", "nine forty-five", "quarter before ten"],
       "answer": "quarter to ten",
-      "explain": "09:45 = quarter to ten, mert negyed múlva tíz."
+      "explain": "09:45 = quarter to ten (negyed múlva tíz)."
     },
     {
       "id": "q4",
@@ -48,7 +47,7 @@
       "prompt": "07:20 angolul helyesen:",
       "options": ["seven twenty", "twenty past seven", "seven and twenty", "twenty to seven"],
       "answer": "twenty past seven",
-      "explain": "07:20 = twenty past seven, mert 20 perccel múlt 7."
+      "explain": "07:20 = twenty past seven (20 perccel múlt 7)."
     }
   ]
 }
