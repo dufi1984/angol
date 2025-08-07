@@ -1,53 +1,10 @@
 {
   "id": "modal-verbs-advanced",
   "title": "Modal Verbs – Haladó",
-  "description": "Haladó gyakorlófeladatok a módbeli segédigékről.",
-  "edu": "A módbeli segédigék (modal verbs) a főige előtt állnak és jelentést módosítanak (képesség, valószínűség, kötelesség, tiltás, tanács, udvariasság). Nyelvtani szabályok: (1) NINCS -s 3. személyben: She can swim. (2) Utánuk az ige ALAPFORMÁJA jön: must go, should see. (3) Negatív: modal + not (can’t, shouldn’t, mustn’t). (4) Múltbeli következtetés/valószínűség: modal + have + V3 (might have lost, must have left). Jelentéskülönbségek: MUST = erős bizonyosság/kötelezettség (He must be at work. / You must wear a helmet.), CAN’T = erős tagadó következtetés (He can’t be 50.), SHOULD = tanács (You should rest.), MIGHT/COULD/MAY = lehetőség (It might rain.), COULD/WOULD = udvarias kérés (Could you…?).",
+  "description": "Haladó szintű feladatok a módbeli segédigékről.",
+  "tags": [],
+  "edu": "A módbeli segédigék (modal verbs) a főige előtt állnak és a jelentést módosítják (képesség, valószínűség, kötelesség, tiltás, tanács, udvariasság).\n\nNyelvtani szabályok:\n1. **Nincs -s 3. személyben:** She can swim.\n2. **Utánuk az ige alapformája** jön: must go, should see.\n3. **Negatív:** modal + not → can’t, shouldn’t, mustn’t.\n4. **Múltbeli következtetés/valószínűség:** modal + have + V3 → might have lost, must have left.\n\nJelentéskülönbségek:\n- **MUST** = erős bizonyosság / kötelezettség (He must be at work. / You must wear a helmet.)\n- **CAN’T** = erős tagadó következtetés (He can’t be 50.)\n- **SHOULD** = tanács (You should rest.)\n- **MIGHT / COULD / MAY** = lehetőség (It might rain.)\n- **COULD / WOULD** = udvarias kérés (Could you…?).",
   "lessons": [
-    {
-      "id": "q1",
-      "type": "mcq",
-      "title": "Valószínű következtetés",
-      "prompt": "He _______ be at the meeting, I saw his car outside.",
-      "options": ["must", "might", "can't", "should"],
-      "answer": "must",
-      "explain": "Erős, pozitív következtetés jelenre → must."
-    },
-    {
-      "id": "q2",
-      "type": "fill",
-      "title": "Udvarias tanács",
-      "prompt": "You _______ talk to your boss about this problem.",
-      "answer": "should",
-      "placeholder": "írj ide egy segédigét",
-      "explain": "Tanács → should."
-    },
-    {
-      "id": "q3",
-      "type": "mcq",
-      "title": "Lehetőség a múltban",
-      "prompt": "She _______ have taken the wrong train, that’s why she’s late.",
-      "options": ["must", "might", "could", "can't"],
-      "answer": "might",
-      "explain": "Múltbeli lehetőség → might have + V3."
-    },
-    {
-      "id": "q4",
-      "type": "fill",
-      "title": "Erős kötelezettség",
-      "prompt": "All passengers _______ present their tickets upon boarding.",
-      "answer": "must",
-      "placeholder": "írj ide egy segédigét",
-      "explain": "Szabály/kötelezettség → must."
-    },
-    {
-      "id": "q5",
-      "type": "mcq",
-      "title": "Tiltás",
-      "prompt": "You _______ park here, it’s a no-parking zone.",
-      "options": ["must", "can't", "shouldn't", "might not"],
-      "answer": "can't",
-      "explain": "Tiltás / lehetetlenség → can’t."
-    }
+    ...
   ]
 }
