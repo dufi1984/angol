@@ -1,13 +1,13 @@
 {
   "id": "modal-verbs-advanced",
-  "name": "Modal Verbs – Haladó",
+  "title": "Modal Verbs – Haladó",
   "description": "Haladó gyakorlófeladatok a módbeli segédigékről.",
   "tags": ["grammar", "B2–C1", "modal verbs"],
-  "questions": [
+  "lessons": [
     {
       "id": "q1",
       "type": "mcq",
-      "title": "Választós: Valószínű következtetés",
+      "title": "Valószínű következtetés",
       "prompt": "He _______ be at the meeting, I saw his car outside.",
       "options": ["must", "might", "can't", "should"],
       "answer": "must",
@@ -16,7 +16,7 @@
     {
       "id": "q2",
       "type": "fill",
-      "title": "Kitöltős: Udvarias tanács",
+      "title": "Udvarias tanács",
       "prompt": "You _______ talk to your boss about this problem.",
       "answer": "should",
       "placeholder": "írj ide egy segédigét",
@@ -25,16 +25,16 @@
     {
       "id": "q3",
       "type": "mcq",
-      "title": "Választós: Lehetőség múltban",
+      "title": "Lehetőség a múltban",
       "prompt": "She _______ have taken the wrong train, that’s why she’s late.",
       "options": ["must", "might", "could", "can't"],
       "answer": "might",
-      "explain": "Lehetőség a múltban → might have."
+      "explain": "Lehetőség (múlt) → might have."
     },
     {
       "id": "q4",
       "type": "fill",
-      "title": "Kitöltős: Erős kötelezettség jövőben",
+      "title": "Erős kötelezettség",
       "prompt": "All passengers _______ present their tickets upon boarding.",
       "answer": "must",
       "placeholder": "írj ide egy segédigét",
@@ -43,7 +43,7 @@
     {
       "id": "q5",
       "type": "mcq",
-      "title": "Választós: Tiltás",
+      "title": "Tiltás",
       "prompt": "You _______ park here, it’s a no-parking zone.",
       "options": ["must", "can't", "shouldn't", "might not"],
       "answer": "can't",
