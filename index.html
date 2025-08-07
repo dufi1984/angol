@@ -16,20 +16,26 @@
   </header>
 
   <main class="container">
-    <section>
-      <h1>Válassz egy modult</h1>
-      <p class="muted">Kattints egy modulra a kezdéshez. Új modulokat a <em>Modulkezelő</em> oldalon adhatsz hozzá.</p>
-
-      <div id="moduleList" class="card-grid"></div>
+    <section id="chooser">
+      <h1>Válassz modult</h1>
+      <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
+        <select id="moduleSelect" class="input" style="min-width:280px;"></select>
+        <button id="startBtn" class="primary">Indítás</button>
+      </div>
+      <div id="moduleMeta" class="card" style="margin-top:12px;">
+        <div class="title" id="moduleTitle">–</div>
+        <div class="desc" id="moduleDesc">Válassz a listából egy modult.</div>
+        <div class="tags" id="moduleTags" style="margin-top:8px;"></div>
+      </div>
     </section>
 
     <section id="lessonArea" class="lesson hidden">
       <div class="lesson-head">
-        <button id="backBtn" class="ghost">&larr; Vissza a modulokhoz</button>
+        <button id="backBtn" class="ghost">&larr; Vissza</button>
         <h2 id="lessonTitle"></h2>
       </div>
       <div id="lessonContent" class="lesson-content"></div>
-      <div id="lessonFooter" class="lesson-footer">
+      <div class="lesson-footer">
         <button id="prevBtn" class="secondary" disabled>Előző</button>
         <button id="nextBtn" class="primary">Tovább</button>
       </div>
@@ -37,11 +43,11 @@
   </main>
 
   <footer class="footer">
-    <small>Statikus demó • Nincs bejelentkezés • Modulok a böngésződben tárolódnak</small>
+    <small>Statikus demó • Modulok a böngészőben tárolódnak</small>
   </footer>
 
   <script src="js/modules_seed.js"></script>
   <script src="js/storage.js"></script>
-  <script src="js/app.js"></script>
+  <script src="js/app.js?v=2"></script>
 </body>
 </html>
