@@ -1,7 +1,17 @@
-{ "modules": [
-  "modal-verbs-advanced.json"
-,
-  "phrasal-verbs-everyday.json"
-,
-  "telling-time.json"
-] }
+[
+  {
+    "id": "modal-verbs-advanced",
+    "title": "Modal Verbs – Haladó",
+    "description": "Haladó szintű feladatok a módbeli segédigékről."
+  },
+  {
+    "id": "phrasal-verbs-everyday",
+    "title": "Phrasal Verbs – Mindennapi",
+    "description": "Mindennapi kifejezések phrasal verbekkel."
+  },
+  {
+    "id": "telling-time",
+    "title": "Telling the Time",
+    "description": "Gyakorlás az idő kifejezésére angolul."
+  }
+]
