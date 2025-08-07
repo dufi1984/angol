@@ -3,7 +3,7 @@
   "title": "Modal Verbs – Haladó",
   "description": "Haladó szintű feladatok a módbeli segédigékről.",
   "tags": [],
-  "edu": "A módbeli segédigék (modal verbs) a főige előtt állnak, és a mondat jelentését módosítják.\n\n**Fő funkciók:** képesség, valószínűség, kötelesség, tiltás, tanácsadás, udvariasság.\n\n**Nyelvtani alapok:**\n1. Nincs -s 3. személyben: *She can swim.*\n2. Utánuk az ige alapformája jön: *must go, should see*.\n3. Negatív forma: modal + not → *can’t, shouldn’t, mustn’t*.\n4. Múltbeli következtetés: modal + have + V3 → *might have lost, must have left*.\n\n**Jelentésbeli különbségek:**\n- **MUST** → erős bizonyosság vagy kötelezettség (*He must be at work. / You must wear a helmet.*)\n- **CAN’T** → erős tagadó következtetés (*He can’t be 50.*)\n- **SHOULD** → tanács (*You should rest.*)\n- **MIGHT / COULD / MAY** → lehetőség (*It might rain.*)\n- **COULD / WOULD** → udvarias kérés (*Could you help me?*)",
+  "edu": "A módbeli segédigék (modal verbs) a főige előtt állnak, és a mondat jelentését módosítják.\n\nFő funkciók: képesség, valószínűség, kötelesség, tiltás, tanácsadás, udvariasság.\n\nNyelvtani alapok:\n1) Nincs -s 3. személyben: She can swim.\n2) Utánuk az ige alapformája jön: must go, should see.\n3) Negatív: modal + not → can’t, shouldn’t, mustn’t.\n4) Múltbeli következtetés: modal + have + V3 → might have lost, must have left.\n\nJelentéskülönbségek:\n- MUST = erős bizonyosság / kötelezettség (He must be at work. / You must wear a helmet.)\n- CAN’T = erős tagadó következtetés (He can’t be 50.)\n- SHOULD = tanács (You should rest.)\n- MIGHT/COULD/MAY = lehetőség (It might rain.)\n- COULD/WOULD = udvarias kérés (Could you…?).",
   "lessons": [
     {
       "id": "q1",
@@ -48,7 +48,7 @@
       "prompt": "You _______ park here, it’s a no-parking zone.",
       "options": ["must", "can't", "shouldn't", "might not"],
       "answer": "can't",
-      "explain": "Tiltás → can’t."
+      "explain": "Tiltás / lehetetlenség → can’t."
     }
   ]
 }
