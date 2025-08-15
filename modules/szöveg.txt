@@ -1,0 +1,189 @@
+{
+  "id": "shopping-supermarket",
+  "title": "Shopping in the Supermarket",
+  "description": "Szókincs és párbeszéd gyakorlása vásárlás közben.",
+  "tags": [],
+  "edu": "Ebben a leckében a szupermarketben való vásárlás témakörét gyakoroljuk: élelmiszerek, háztartási cikkek, tartós fogyasztási termékek, valamint a boltban való eligazodás.",
+  "lessons": [
+    {
+      "id": "q1",
+      "type": "mcq",
+      "title": "Áru elhelyezkedése",
+      "prompt": "Where can you find toilet paper in a supermarket?",
+      "options": ["In the frozen section", "In the cleaning supplies aisle", "Next to the bakery", "In the drinks section"],
+      "answer": "In the cleaning supplies aisle",
+      "explain": "Toilet paper is usually in the cleaning supplies or household aisle."
+    },
+    {
+      "id": "q2",
+      "type": "fill",
+      "title": "Gyümölcs neve",
+      "prompt": "alma angolul = ______",
+      "answer": "apple",
+      "placeholder": "egy szó",
+      "explain": "Alma = apple."
+    },
+    {
+      "id": "q3",
+      "type": "mcq",
+      "title": "Pékáru",
+      "prompt": "Where can you buy a baguette in the supermarket?",
+      "options": ["At the bakery section", "In the dairy aisle", "In the electronics section", "In the cleaning aisle"],
+      "answer": "At the bakery section",
+      "explain": "Baguette is bread, found in the bakery section."
+    },
+    {
+      "id": "q4",
+      "type": "fill",
+      "title": "Párbeszéd kiegészítése",
+      "prompt": "Customer: Excuse me, where can I find the ______?\nShop assistant: Aisle 7, next to the sugar.",
+      "answer": "flour",
+      "placeholder": "egy szó",
+      "explain": "Flour (liszt) often found near sugar."
+    },
+    {
+      "id": "q5",
+      "type": "mcq",
+      "title": "Tartós fogyasztási cikk",
+      "prompt": "Which of these is a durable household product?",
+      "options": ["Vacuum cleaner", "Bread", "Milk", "Banana"],
+      "answer": "Vacuum cleaner",
+      "explain": "Durable products last for years, like a vacuum cleaner."
+    },
+    {
+      "id": "q6",
+      "type": "fill",
+      "title": "Tejtermék neve",
+      "prompt": "vaj angolul = ______",
+      "answer": "butter",
+      "placeholder": "egy szó",
+      "explain": "Vaj = butter."
+    },
+    {
+      "id": "q7",
+      "type": "mcq",
+      "title": "Fagyasztott áru",
+      "prompt": "Which is usually found in the frozen section?",
+      "options": ["Ice cream", "Flour", "Canned beans", "Shampoo"],
+      "answer": "Ice cream",
+      "explain": "Frozen section stores ice cream."
+    },
+    {
+      "id": "q8",
+      "type": "fill",
+      "title": "Párbeszéd kiegészítés",
+      "prompt": "Cashier: That will be ______ pounds, please.",
+      "answer": "ten",
+      "placeholder": "szám vagy szó",
+      "explain": "A pénztáros az árat mondja."
+    },
+    {
+      "id": "q9",
+      "type": "mcq",
+      "title": "Italok",
+      "prompt": "Which of these is a soft drink?",
+      "options": ["Cola", "Wine", "Coffee", "Milk"],
+      "answer": "Cola",
+      "explain": "Soft drinks are non-alcoholic carbonated drinks."
+    },
+    {
+      "id": "q10",
+      "type": "fill",
+      "title": "Zöldség neve",
+      "prompt": "répa angolul = ______",
+      "answer": "carrot",
+      "placeholder": "egy szó",
+      "explain": "Répa = carrot."
+    },
+    {
+      "id": "q11",
+      "type": "mcq",
+      "title": "Boltban eligazodás",
+      "prompt": "If you are looking for shampoo, where do you go?",
+      "options": ["Personal care aisle", "Bakery section", "Meat counter", "Electronics section"],
+      "answer": "Personal care aisle",
+      "explain": "Shampoo is in the personal care aisle."
+    },
+    {
+      "id": "q12",
+      "type": "fill",
+      "title": "Párbeszéd kiegészítés",
+      "prompt": "Customer: Do you sell ______ bags?\nShop assistant: Yes, they’re at the checkout counter.",
+      "answer": "shopping",
+      "placeholder": "egy szó",
+      "explain": "Shopping bags are often sold at the checkout."
+    },
+    {
+      "id": "q13",
+      "type": "mcq",
+      "title": "Húsfélék",
+      "prompt": "Which of these is poultry?",
+      "options": ["Chicken", "Beef", "Pork", "Fish"],
+      "answer": "Chicken",
+      "explain": "Poultry = baromfi, pl. chicken."
+    },
+    {
+      "id": "q14",
+      "type": "fill",
+      "title": "Párbeszéd kiegészítés",
+      "prompt": "Cashier: Would you like a receipt?\nCustomer: Yes, ______.",
+      "answer": "please",
+      "placeholder": "egy szó",
+      "explain": "Polite answer: Yes, please."
+    },
+    {
+      "id": "q15",
+      "type": "mcq",
+      "title": "Tartós élelmiszer",
+      "prompt": "Which is a non-perishable food?",
+      "options": ["Canned tuna", "Fresh milk", "Fresh strawberries", "Yogurt"],
+      "answer": "Canned tuna",
+      "explain": "Non-perishable = sokáig eláll, pl. canned tuna."
+    },
+    {
+      "id": "q16",
+      "type": "fill",
+      "title": "Háztartási eszköz",
+      "prompt": "vasaló angolul = ______",
+      "answer": "iron",
+      "placeholder": "egy szó",
+      "explain": "Vasaló = iron."
+    },
+    {
+      "id": "q17",
+      "type": "mcq",
+      "title": "Friss áru",
+      "prompt": "Where is fresh fish usually sold?",
+      "options": ["At the fish counter", "In the frozen section", "In the electronics aisle", "Next to the bread"],
+      "answer": "At the fish counter",
+      "explain": "Fresh fish is sold at the fish counter."
+    },
+    {
+      "id": "q18",
+      "type": "fill",
+      "title": "Párbeszéd kiegészítés",
+      "prompt": "Customer: Can I pay by ______?\nCashier: Yes, we accept credit and debit.",
+      "answer": "card",
+      "placeholder": "egy szó",
+      "explain": "Pay by card = kártyával fizetni."
+    },
+    {
+      "id": "q19",
+      "type": "mcq",
+      "title": "Konyhai eszköz",
+      "prompt": "Which of these is used for cooking?",
+      "options": ["Saucepan", "Vacuum cleaner", "Toothbrush", "Broom"],
+      "answer": "Saucepan",
+      "explain": "Saucepan = lábas, főzésre."
+    },
+    {
+      "id": "q20",
+      "type": "fill",
+      "title": "Ital neve",
+      "prompt": "narancslé angolul = ______ juice",
+      "answer": "orange",
+      "placeholder": "egy szó",
+      "explain": "Narancslé = orange juice."
+    }
+  ]
+}
